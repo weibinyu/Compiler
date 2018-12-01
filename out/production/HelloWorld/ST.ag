@@ -1,0 +1,93 @@
+**********
+***Goal***
+**********
+
+Goal	: Expression
+
++++synthesized+++
+Goal.COMPLETE <- Expression.COMPLETE 
+Goal.OK <- Expression.KIND != Error
+
+*********************
+***UnaryExpression***
+*********************
+UnaryExpression : Expression
+
++++inherited+++
+Expression.COERCE <- false
+
++++synthesized+++
+UnaryExpression.KIND <- 
+	Integer, if (Expression.KIND == Integer && isNumeric(UnaryExpression.OP_CODE)
+	Real, if Expression.KIND == Real && isNumeric(UnaryExpression.OP_CODE)
+	Boolean, if Expression.KIND == Boolean && UnaryExpression.OP_CODE == "NOT"
+	Error, otherwise
+UnaryExpression.COMPLETE <- (UnaryExpression.KIND != null && UnaryExpression.COERCE != null && Expression.COMPLETE != null)
+
+**********************
+***BinaryExpression***
+**********************
+
+BinaryExpression : Expression Expression
+
++++inherited+++
+Expression[0].COERCE <- Expression[0].KIND == Integer && BinaryExpression.KIND == Real
+Expression[1].COERCE <- Expression[1].KIND == Integer && BinaryExpression.KIND == Real
+
++++synthesized+++
+BinaryExpression.KIND <- 
+	Integer, if Expression[0].KIND == Integer && Expression[1].KIND == Integer && isNumeric(BinaryExpression.OP_CODE) 
+	Real, if (Expression[0].KIND == Real && isNumeric(Expression[1].KIND) || isNumeric(Expression[0].KIND) && Expression[1].KIND == Real) && isNumeric(BinaryExpression.OP_CODE)
+	String, if Expression[0].KIND == String && Expression[1].KIND == String && BinaryExpression.OP_CODE=="+"
+	Boolean, if Expression[0].KIND == Boolean && Expression[1].KIND == Boolean && isLogic(BinaryExpression.OP_CODE)
+	Boolean, if isNumeric(Expression[0].KIND) && isNumeric(Expression[1].KIND) && (isCompareNumeric(BinaryExpression.OP_CODE) || isCompare(BinaryExpression.OP_CODE))
+	Boolean, if Expression[0].KIND == Expression[1].KIND && isCompare(BinaryExpression.OP_CODE))
+	Error, otherwise
+BinaryExpression.COMPLETE <- (BinaryExpression.KIND != null && BinaryExpression.COERCE != null)
+
+**************
+***_Literal***
+**************
+
++++synthesized+++
+IntLiteral.KIND <- Integer
+StringLiteral.KIND <- String
+BooleanLiteral.KIND <- Boolean
+RealLiteral.KIND <- Real
+
+**********************
+***Macro Expression***
+**********************
+Expression = UnaryExpression 
+		| BinaryExpression
+		| IntLiteral
+		| StringLiteral
+		| BooleanLiteral
+		| RealLiteral
+
+****************
+***Attributes***
+****************
+Boolean COMPLETE
+Boolean OK
+Boolean COERCE
+TypeValues KIND
+OpCodes OP_CODE
+
+***************
+***Auxiliary***
+***************
+boolean isNumeric(OpCodes opcode)
+	return {"+", "-", "*", "/", "MOD", "**"}.contains(opcode); 
+
+boolean isLogic(OpCodes opcode)
+	return {"AND", "OR", "XOR" }.contains(opcode); 
+
+boolean isCompareNumeric(OpCodes opcode)
+	return {"<", "<=", ">", ">="}.contains(opcode);
+
+boolean isCompare(OpCodes opcode)
+	return {"==", "<>"}.contains(opcode);
+
+isNumeric(TypeValues kind)
+	return {Real, Integer}.contains(kind);
