@@ -1,14 +1,19 @@
 public class TaskNode {
-
+    private int id;
     private String task;
     private String opCode;
     private String sort;
     private String kind;
     private boolean coerce;
     private String value;
+    private TaskNode next;
+    private TaskNode pred;
+    private TaskNode predLeft;
+    private TaskNode predRight;
 
-    public TaskNode(String task){
+    public TaskNode(String task,int id){
         this.task = task;
+        this.id = id;
     }
 
     public String getOpCode() {
@@ -35,7 +40,7 @@ public class TaskNode {
         this.kind = kind;
     }
 
-    public boolean isCoerce() {
+    public boolean getCoerce() {
         return coerce;
     }
 
@@ -49,5 +54,45 @@ public class TaskNode {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public TaskNode getNext() {
+        return next;
+    }
+
+    public void setNext(TaskNode next) {
+        this.next = next;
+    }
+
+    public TaskNode getPred() {
+        return pred;
+    }
+
+    public void setPred(TaskNode pred) {
+        this.pred = pred;
+    }
+
+    public TaskNode getPredLeft() {
+        return predLeft;
+    }
+
+    public void setPredLeft(TaskNode predLeft) {
+        this.predLeft = predLeft;
+    }
+
+    public TaskNode getPredRight() {
+        return predRight;
+    }
+
+    public void setPredRight(TaskNode predRight) {
+        this.predRight = predRight;
+    }
+
+    public String getTask() {
+        return task;
+    }
+
+    public int getId() {
+        return id;
     }
 }

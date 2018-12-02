@@ -13,6 +13,7 @@ public class ASTNode{
     private TaskNode first;
     private TaskNode last;
     private TaskNode next;
+    private TaskNode pred;
 
 
     public ASTNode(String name,String at,String oq,int id) {
