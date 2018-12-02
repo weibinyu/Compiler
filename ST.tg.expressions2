@@ -1,0 +1,79 @@
+**********
+***Goal***
+**********
+Goal	: Expression
+Attributes = {first, last}
+
++++synthesized+++
+Goal.first <- Expression.first 
+Goal.last <- newTask("Terminate") 
+	---side effect---
+	CT=Expression.first
+	---task properties---
+	Task.kind=VOID
+	---continuations---
+	Expression.last.next=Task
+
+
+*********************
+***UnaryExpression***
+*********************
+UnaryExpression : Expression
+Attributes = {first, last}
+
++++synthesized+++
+UnaryExpression.first <- Expression.first
+UnaryExpression.last <- newTask("UnaryExp")
+	---task properties---
+	Task.kind=UnaryExpression.KIND
+	Task.opcode=UnaryExpression.OP_CODE
+	Task.coerce=UnaryExpression.COERCE
+	---continuations---
+	Task.pred=Expression.last
+	Expression.last.next=Task
+
+
+**********************
+***BinaryExpression***
+**********************
+BinaryExpression : Expression Expression
+Attributes = {first, last}
+
++++synthesized+++
+BinaryExpression.first <- Expression[0].first
+BinaryExpression.last <- newTask("BinaryExp")
+	---task properties---
+	Task.kind=BinaryExpression.KIND
+	Task.opcode=BinaryExpression.OP_CODE
+	Task.coerce=BinaryExpression.COERCE
+	---continuations---
+	Task.predLeft=Expression[0].last
+	Task.predRight=Expression[1].last
+	Expression[0].last.next=Expression[1].first
+	Expression[1].last.next=Task
+
+
+**************
+***_Literal***
+**************
+Attributes = {first, last}
+
++++synthesized+++
+_Literal.last <- newConstantTask("Const")
+_Literal.first <- _Literal.last
+	---properties---
+	Task.kind=_Literal.KIND
+	Task.value=_Literal.VALUE
+	Task.coerce=_Literal.COERCE
+
+
+**********************
+***Macro Expression***
+**********************
+Expression = UnaryExpression 
+		| BinaryExpression
+		| IntLiteral
+		| StringLiteral
+		| BooleanLiteral
+		| RealLiteral
+
