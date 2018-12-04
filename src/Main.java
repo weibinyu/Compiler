@@ -40,7 +40,7 @@ public class Main {
             out2.begin("TASK.gml");
             task.addSink(out2);
             task.setStrict(false);
-            
+
             taskConstruct(g);
             taskConstruct(g);
             drawTask(g);
