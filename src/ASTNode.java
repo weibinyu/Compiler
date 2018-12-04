@@ -101,11 +101,4 @@ public class ASTNode{
         this.next = next;
     }
 
-    public int getTotalChildren(int t){
-        int total = t;
-        for(ASTNode a : this.children){
-            total += 1;
-        }
-        return total;
-    }
 }

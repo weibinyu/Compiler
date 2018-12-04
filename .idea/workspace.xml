@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="49f0e0e7-27e6-4128-b654-421b1736be2b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AST.gml" beforeDir="false" afterPath="$PROJECT_DIR$/AST.gml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TASK.gml" beforeDir="false" afterPath="$PROJECT_DIR$/TASK.gml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input2.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/HelloWorld/ASTConstructListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HelloWorld/ASTConstructListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/HelloWorld/ASTNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HelloWorld/ASTNode.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/HelloWorld/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HelloWorld/Main.class" afterDir="false" />
@@ -19,26 +22,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="373">
-              <caret line="48" column="51" selection-start-line="48" selection-start-column="51" selection-end-line="48" selection-end-column="51" />
+            <state relative-caret-position="348">
+              <caret line="42" column="12" selection-start-line="42" selection-start-column="12" selection-end-line="42" selection-end-column="12" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#drawTask#0;class#Main#0" />
                 <element signature="method#drawGraph#0;class#Main#0" />
                 <element signature="method#semanticAnalysis#0;class#Main#0" />
-                <element signature="method#setSort#0;class#Main#0" />
-                <element signature="method#isNumeric#0;class#Main#0" />
+                <element signature="method#taskConstruct#0;class#Main#0" />
                 <element signature="method#isNumericValue#0;class#Main#0" />
                 <element signature="method#isLogic#0;class#Main#0" />
                 <element signature="method#isCompareNumeric#0;class#Main#0" />
                 <element signature="method#isCompare#0;class#Main#0" />
                 <element signature="method#addTaskG#0;class#Main#0" />
-                <element signature="e#14315#14316#0" expanded="true" />
-                <element signature="e#14350#14351#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/lang/Integer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="189">
+              <caret line="765" selection-start-line="765" selection-end-line="765" />
             </state>
           </provider>
         </entry>
@@ -46,7 +54,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ST.g4">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3610">
+            <state relative-caret-position="3895">
               <caret line="235" selection-start-line="235" selection-end-line="235" />
             </state>
           </provider>
@@ -55,8 +63,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TASK.gml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1402">
-              <caret line="23" column="21" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
+            <state relative-caret-position="-1136">
+              <caret line="37" column="21" selection-start-line="37" selection-start-column="21" selection-end-line="37" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -64,7 +72,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ST.tg.expressions">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-35">
+            <state relative-caret-position="118">
               <caret line="34" column="29" selection-start-line="34" selection-start-column="29" selection-end-line="34" selection-end-column="29" />
             </state>
           </provider>
@@ -73,8 +81,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ASTConstructListener.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-38">
-              <caret line="10" column="26" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
+            <state relative-caret-position="2413">
+              <caret line="139" column="58" selection-start-line="139" selection-start-column="58" selection-end-line="139" selection-end-column="58" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1403#1404#0" expanded="true" />
@@ -97,7 +105,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ST.ag">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
+            <state relative-caret-position="-623">
               <caret line="34" column="20" selection-start-line="34" selection-start-column="14" selection-end-line="34" selection-end-column="20" />
             </state>
           </provider>
@@ -106,17 +114,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AST.gml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="422">
-              <caret line="75" column="19" selection-start-line="75" selection-start-column="19" selection-end-line="75" selection-end-column="19" />
+            <state relative-caret-position="1425">
+              <caret line="165" column="19" selection-start-line="165" selection-start-column="19" selection-end-line="165" selection-end-column="19" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ASTNode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="341">
-              <caret line="104" column="21" selection-start-line="104" selection-start-column="21" selection-end-line="104" selection-end-column="21" />
+            <state relative-caret-position="987">
+              <caret line="102" selection-start-line="102" selection-end-line="102" />
             </state>
           </provider>
         </entry>
@@ -127,13 +135,6 @@
             <state relative-caret-position="570">
               <caret line="42" column="22" selection-start-line="42" selection-start-column="22" selection-end-line="42" selection-end-column="22" />
             </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ST.tg.expressions2">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-684" />
           </provider>
         </entry>
       </file>
@@ -149,6 +150,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>sys</find>
+      <find>system</find>
     </findStrings>
     <dirStrings>
       <dir>C:\Users\weibin\IdeaProjects\Compiler</dir>
@@ -171,9 +173,9 @@
         <option value="$PROJECT_DIR$/src/ST.ag" />
         <option value="$PROJECT_DIR$/src/TaskNode.java" />
         <option value="$PROJECT_DIR$/TASK.gml" />
+        <option value="$PROJECT_DIR$/src/ASTNode.java" />
         <option value="$PROJECT_DIR$/src/ASTConstructListener.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
-        <option value="$PROJECT_DIR$/src/ASTNode.java" />
       </list>
     </option>
   </component>
@@ -183,7 +185,7 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
@@ -229,7 +231,7 @@
     <property name="$PROJECT_DIR$/src/ST.g4::/auto-gen" value="false" />
     <property name="$PROJECT_DIR$/src/ST.g4::/gen-listener" value="true" />
     <property name="$PROJECT_DIR$/src/ST.g4::/gen-visitor" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1543791184022" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1543945742956" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -424,20 +426,6 @@
         <state relative-caret-position="-684" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ST.ag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="34" column="20" selection-start-line="34" selection-start-column="14" selection-end-line="34" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ST.tg.expressions">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-35">
-          <caret line="34" column="29" selection-start-line="34" selection-start-column="29" selection-end-line="34" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/TaskNode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="570">
@@ -445,17 +433,45 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/lang/Integer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="765" selection-start-line="765" selection-end-line="765" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/TASK.gml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1402">
-          <caret line="23" column="21" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
+        <state relative-caret-position="-1136">
+          <caret line="37" column="21" selection-start-line="37" selection-start-column="21" selection-end-line="37" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ST.tg.expressions">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="34" column="29" selection-start-line="34" selection-start-column="29" selection-end-line="34" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AST.gml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1425">
+          <caret line="165" column="19" selection-start-line="165" selection-start-column="19" selection-end-line="165" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ASTNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="987">
+          <caret line="102" selection-start-line="102" selection-end-line="102" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ASTConstructListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-38">
-          <caret line="10" column="26" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
+        <state relative-caret-position="2413">
+          <caret line="139" column="58" selection-start-line="139" selection-start-column="58" selection-end-line="139" selection-end-column="58" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1403#1404#0" expanded="true" />
@@ -474,46 +490,35 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AST.gml">
+    <entry file="file://$PROJECT_DIR$/ST.ag">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="422">
-          <caret line="75" column="19" selection-start-line="75" selection-start-column="19" selection-end-line="75" selection-end-column="19" />
+        <state relative-caret-position="-623">
+          <caret line="34" column="20" selection-start-line="34" selection-start-column="14" selection-end-line="34" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ST.g4">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3610">
+        <state relative-caret-position="3895">
           <caret line="235" selection-start-line="235" selection-end-line="235" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="48" column="51" selection-start-line="48" selection-start-column="51" selection-end-line="48" selection-end-column="51" />
+        <state relative-caret-position="348">
+          <caret line="42" column="12" selection-start-line="42" selection-start-column="12" selection-end-line="42" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#drawTask#0;class#Main#0" />
             <element signature="method#drawGraph#0;class#Main#0" />
             <element signature="method#semanticAnalysis#0;class#Main#0" />
-            <element signature="method#setSort#0;class#Main#0" />
-            <element signature="method#isNumeric#0;class#Main#0" />
+            <element signature="method#taskConstruct#0;class#Main#0" />
             <element signature="method#isNumericValue#0;class#Main#0" />
             <element signature="method#isLogic#0;class#Main#0" />
             <element signature="method#isCompareNumeric#0;class#Main#0" />
             <element signature="method#isCompare#0;class#Main#0" />
             <element signature="method#addTaskG#0;class#Main#0" />
-            <element signature="e#14315#14316#0" expanded="true" />
-            <element signature="e#14350#14351#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ASTNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="104" column="21" selection-start-line="104" selection-start-column="21" selection-end-line="104" selection-end-column="21" />
         </state>
       </provider>
     </entry>

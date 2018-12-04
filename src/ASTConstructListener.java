@@ -136,7 +136,8 @@ public class ASTConstructListener extends STBaseListener {
     @Override
     public void exitString_literal(STParser.String_literalContext ctx) {
         id++;
-        ASTNode a = new ASTNode("Constant","String",ctx.getText(),id);
+        String string = ctx.getText().substring(1,ctx.getText().length()-1);
+        ASTNode a = new ASTNode("Constant","String",string,id);
         s.add(a);
     }
 
