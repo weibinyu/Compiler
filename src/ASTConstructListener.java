@@ -8,6 +8,7 @@ import java.util.Stack;
 public class ASTConstructListener extends STBaseListener {
     private Stack<ASTNode> s = new Stack<>();
     private int id = 0;
+    private int total = 0;
     private ASTNode goal = new ASTNode("Goal",null,null,id);
     @Override
     public void exitGoal(STParser.GoalContext ctx) {

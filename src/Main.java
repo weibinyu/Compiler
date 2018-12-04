@@ -38,16 +38,25 @@ public class Main {
             ASTNode g = astL.getGoal();
             semanticAnalysis(g);
             semanticAnalysis(g);
-            taskConstruct(g);
-            System.out.println(" ");
-            taskConstruct(g);
-            System.out.println(" ");
-            taskConstruct(g);
-            drawTask(g);
             /*while (g.getCOMPLETE()!= true){
                 semanticAnalysis(g);
             }*/
+            System.out.println("Done?");
+            taskConstruct(g);
+            System.out.println("Done?");
+            taskConstruct(g);
+            taskConstruct(g);
+            System.out.println(g.getTotalChildren(0));
+            /*
+            TaskNode taskNode = g.getFirst();
+            while(taskNode.getNext()!=null){
+                System.out.println(taskNode.getTask());
+                taskNode = taskNode.getNext();
+            }
+            */
+            drawTask(g);
             drawGraph(g);
+            setSort(g.getFirst());
             out2.end();
             out1.end();
             //Trees.inspect(tree, parser);
@@ -56,7 +65,7 @@ public class Main {
             return;
         }
     }
-
+    //add edges and draw graph
     public static void drawTask(ASTNode start){
         ASTNode current = start;
 
@@ -74,8 +83,6 @@ public class Main {
             task.addEdge(last.getTask()+" CE "+el.getTask(),String.valueOf(last.getId()),String.valueOf(el.getId()));
 
             drawTask(current.getChildren().get(0));
-
-        }else if (current.getName().equals("Constant")){
 
         }else if(current.getArgumentType().equals("UE")){
 
@@ -124,7 +131,6 @@ public class Main {
             ast.addEdge(g.getId()+" to "+a.getId(), String.valueOf(g.getId()), String.valueOf(a.getId()),true);
         }
     }
-
     public static void semanticAnalysis(ASTNode start){
         ASTNode current = start;
         if (current.getName().equals("Goal")){
@@ -159,8 +165,6 @@ public class Main {
         }else if(current.getArgumentType().equals("BE")){
             //inh
             if(current.getKind()!= null){
-                System.out.println(current.getChildren().get(0).getKind());
-                System.out.println(current.getChildren().get(1).getKind());
                 current.getChildren().get(0).setCoerce(current.getChildren().get(0).getKind().equals("Int") && current.getKind().equals("Real"));
                 current.getChildren().get(1).setCoerce(current.getChildren().get(1).getKind().equals("Int") && current.getKind().equals("Real"));
             }
@@ -190,15 +194,14 @@ public class Main {
             current.setCOMPLETE(current.getKind()!=null && current.getCoerce()!=null);
         }
     }
-
     public static void taskConstruct(ASTNode start){
         ASTNode current = start;
-
         if (current.getName().equals("Goal")){
             //inh
             TaskNode t = new TaskNode("Terminate",id);
             id++;
             t.setKind("Void");
+            t.setSort(t.getTask());
             current.getChildren().get(0).setNext(t);
 
             taskConstruct(current.getChildren().get(0));
@@ -214,9 +217,12 @@ public class Main {
             t.setValue(current.getOP_code());
             t.setCoerce(current.getCoerce());
             t.setNext(current.getNext());
+            t.setSort(t.getKind());
             current.setLast(t);
             current.setFirst(current.getLast());
-
+            if(t.getNext()!=null){
+                System.out.println(t.getTask()+"has next"+t.getNext().getTask());
+            }
 
         }else if(current.getArgumentType().equals("UE")){
             //inh
@@ -233,7 +239,9 @@ public class Main {
             t.setNext(current.getNext());
             t.setPred(child.getLast());
             current.setLast(t);
-
+            if(t.getNext()!=null){
+                System.out.println(t.getTask()+"has next"+t.getNext().getTask());
+            }
 
         }else if(current.getArgumentType().equals("BE")){
             //inh
@@ -254,15 +262,56 @@ public class Main {
             t.setPredLeft(left.getLast());
             t.setPredRight(right.getLast());
             current.setLast(t);
-        }
-
-        if(current.getNext() != null){
-            System.out.println("1 "+current.getFirst().getTask()+" "+current.getNext().getTask());
-            System.out.println("2 "+current.getLast().getTask()+" "+current.getNext().getTask());
+            if(t.getNext()!=null){
+                System.out.println(t.getTask()+"has next"+t.getNext().getTask());
+            }
         }
 
     }
 
+    private static void setSort(TaskNode t) {
+        TaskNode task = t;
+            if (task.getTask().equals("UE")) {
+                if (task.getOpCode().equals("+")) {
+
+                } else if (task.getOpCode().equals("-")) {
+
+                } else if (task.getOpCode().equals("NOT")) {
+
+                }
+            } else if (task.getTask().equals("BE")) {
+                if (task.getOpCode().equals("+")) {
+
+                } else if (task.getOpCode().equals("-")) {
+
+                } else if (task.getOpCode().equals("*")) {
+
+                } else if (task.getOpCode().equals("/")) {
+
+                } else if (task.getOpCode().equals("MOD")) {
+
+                } else if (task.getOpCode().equals("POT")) {
+
+                } else if (task.getOpCode().equals(">")) {
+
+                } else if (task.getOpCode().equals("<")) {
+
+                } else if (task.getOpCode().equals(">=")) {
+
+                } else if (task.getOpCode().equals("<=")) {
+
+                } else if (task.getOpCode().equals("==")) {
+
+                } else if (task.getOpCode().equals("<>")) {
+
+                } else if (task.getOpCode().equals("AND")) {
+
+
+                } else if (task.getOpCode().equals("XOR")) {
+
+                }
+            }
+    }
     private static boolean isNumeric(String op){
         String [] a = {"+", "-", "*", "/", "MOD", "**"};
         return Arrays.asList(a).contains(op);
@@ -271,7 +320,6 @@ public class Main {
         String [] a = {"Real", "Int"};
         return Arrays.asList(a).contains(kind);
     }
-
     private static boolean isLogic(String op){
         String [] a = {"AND", "OR", "XOR" };
         return Arrays.asList(a).contains(op);
@@ -284,6 +332,7 @@ public class Main {
         String [] a = {"==", "<>"};
         return Arrays.asList(a).contains(op);
     }
+    //add created Task node as graph node.
     private static void addTaskG(TaskNode n){
         if(n.getTask().equals("Const")){
             task.addNode(String.valueOf(n.getId()));
@@ -296,4 +345,8 @@ public class Main {
             task.getNode(String.valueOf(n.getId())).addAttribute("label", n.getOpCode()+"("+n.getKind()+" "+n.getCoerce()+")");
         }
     }
+    private static void Interpreter(TaskNode start){
+        TaskNode CT = start;
+    }
+
 }
