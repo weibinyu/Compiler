@@ -1,1 +1,23 @@
--(123456+23-9)*123.
+PROGRAM function3
+VAR_ACCESS
+ outInt : INT READ_WRITE;
+END_VAR
+VAR
+ a,b : INT;
+ END_VAR
+ a := 1;	
+ b := 2;	
+ outInt := plus(inc(b),a);
+END_PROGRAM
+FUNCTION plus : INT
+ VAR_INPUT
+ x,y : INT;
+ END_VAR
+ plus := x+y;
+END_FUNCTION
+FUNCTION inc : INT
+ VAR_INPUT
+ i : INT;
+ END_VAR
+ inc := i + 1;
+END_FUNCTION 

@@ -10,6 +10,7 @@ public class ASTConstructListener extends STBaseListener {
     private int id = 0;
     private int total = 0;
     private ASTNode goal = new ASTNode("Goal",null,null,id);
+
     @Override
     public void exitGoal(STParser.GoalContext ctx) {
         ASTNode a = s.pop();
@@ -116,6 +117,8 @@ public class ASTConstructListener extends STBaseListener {
     public void exitReal_literal(STParser.Real_literalContext ctx) {
         id++;
         ASTNode a = new ASTNode("Constant","Real",ctx.getText(),id);
+        a.setCOMPLETE(true);
+        a.setOK(true);
         s.add(a);
     }
 
@@ -123,6 +126,8 @@ public class ASTConstructListener extends STBaseListener {
     public void exitInteger_literal(STParser.Integer_literalContext ctx) {
         id++;
         ASTNode a = new ASTNode("Constant","Int",ctx.getText(),id);
+        a.setCOMPLETE(true);
+        a.setOK(true);
         s.add(a);
     }
 
@@ -130,6 +135,8 @@ public class ASTConstructListener extends STBaseListener {
     public void exitBoolean_literal(STParser.Boolean_literalContext ctx) {
         id++;
         ASTNode a = new ASTNode("Constant","Bool",ctx.getText(),id);
+        a.setCOMPLETE(true);
+        a.setOK(true);
         s.add(a);
     }
 
@@ -138,6 +145,8 @@ public class ASTConstructListener extends STBaseListener {
         id++;
         String string = ctx.getText().substring(1,ctx.getText().length()-1);
         ASTNode a = new ASTNode("Constant","String",string,id);
+        a.setCOMPLETE(true);
+        a.setOK(true);
         s.add(a);
     }
 

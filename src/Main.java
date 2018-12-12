@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.util.Arrays;
 
+import org.antlr.v4.gui.Trees;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -22,7 +23,7 @@ public class Main {
             ast.addSink(out1);
             ast.setStrict(false);
 
-            CharStream codePointCharStream = CharStreams.fromFileName("input2.txt");
+            CharStream codePointCharStream = CharStreams.fromFileName("input.txt");
             STLexer lexer = new STLexer(codePointCharStream);
             STParser parser = new STParser(new CommonTokenStream(lexer));
 
@@ -32,11 +33,11 @@ public class Main {
             ASTConstructListener astL = new ASTConstructListener ();
             walker.walk(astL, tree);
             ASTNode g = astL.getGoal();
-            semanticAnalysis(g);
-            semanticAnalysis(g);
+            //semanticAnalysis(g);
+            //semanticAnalysis(g);
             drawGraph(g);
             out1.end();
-
+            /*
             out2.begin("TASK.gml");
             task.addSink(out2);
             task.setStrict(false);
@@ -46,7 +47,8 @@ public class Main {
             drawTask(g);
             Interpreter(g.getFirst());
             out2.end();
-            //Trees.inspect(tree, parser);
+            */
+            Trees.inspect(tree, parser);
         }catch (IOException e) {
             System.err.println("Input file not found.");
             return;
@@ -77,9 +79,7 @@ public class Main {
             TaskNode e = current.getChildren().get(0).getLast();
             addTaskG(ue);
             addTaskG(e);
-            /*
-            e.setNext(ue);
-            */
+
             task.addEdge(e.getId()+" CE " + ue.getId(),String.valueOf(e.getId()),String.valueOf(ue.getId()));
             task.addEdge(ue.getId()+" DE " + e.getId(),String.valueOf(ue.getId()),String.valueOf(e.getId()));
 
@@ -95,10 +95,7 @@ public class Main {
             addTaskG(e2f);
             addTaskG(e2l);
             addTaskG(b);
-            /*
-            e1l.setNext(e2f);
-            e2l.setNext(b);
-            */
+
             task.addEdge(e1l.getId()+" CE " + e2f.getId(),String.valueOf(e1l.getId()),String.valueOf(e2f.getId()));
             task.addEdge(e2l.getId()+" CE " + b.getId(),String.valueOf(e2l.getId()),String.valueOf(b.getId()));
             task.addEdge(b.getId()+" DE " + e1l.getId(),String.valueOf(b.getId()),String.valueOf(e1l.getId()));
@@ -442,14 +439,20 @@ public class Main {
 
         }
     }
+
+    //Auxiliary
     /*
-    private static int ASTSize(ASTNode s){
-        int t = 0;
-        for(ASTNode a : s.getChildren()){
-            t += ASTSize(a)+1;
-        }
-        return t;
-    }*/
+    * boolean isCompatible (List<AstNode> expressions, Signature sig)
+	true, if
+		same number of actual in-parameters and formal in-paramters
+		&& i-th actual in-parameter KIND is same or coercible to i-th formal in-paramter KIND
+		&& same number of actual out-parameters and formal out-paramtere
+		&& i-th formal out-parameter KIND is same or coercible to i-th actual out-paramter
+		&& all actual out-parameter are variables and ! READ_ONLY
+	false, otherwise */
+    private static boolean isCompatible(){
+        return false;
+    }
     private static boolean isNumeric(String op){
         String [] a = {"+", "-", "*", "/", "MOD", "**"};
         return Arrays.asList(a).contains(op);

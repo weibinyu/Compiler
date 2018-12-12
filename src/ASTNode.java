@@ -14,6 +14,9 @@ public class ASTNode{
     private TaskNode last;
     private TaskNode next;
     private TaskNode pred;
+    //private Scope SCOPE;
+    //private Signature SIG;
+    private ASTNode TARGET;
 
 
     public ASTNode(String name,String at,String oq,int id) {
