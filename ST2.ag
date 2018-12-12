@@ -1,0 +1,385 @@
+**********
+***Goal***
+**********
+
+Goal : Declarations? Program Function*
+
++++inherited+++
+Goal.SCOPE <- new Scope(null) 
+Goal.LOOPS <- new Stack<AstNode> 
+SideEffects { 
+	// initialize global variables
+	ENV = Goal.SCOPE;
+	LOOPS = Goal.LOOPS ;
+}
+
++++synthesized+++
+Goal.OK <- \forall child \in Goal.children: child.OK
+Goal.COMPLETE <- Goal.SCOPE != null && Goal.OK != null && Goal.LOOPS !=null && \forall child \in Goal.children: child.COMPLETE
+SideEffects { 
+	// set ENV complete (no new functions will be added)
+	ENV.setComplete(true);
+	// update global variable ENV
+	ENV = ENV.getPrevious);
+}
+
+******************
+***Declarations***
+******************
+
++++synthesized+++
+Declarations.OK <- \forall child \in Declarations.children: child.OK
+Declarations.COMPLETE <- Declarations.OK != null && \forall child \in Declarations.children: child.COMPLETE
+
+*****************
+***Declaration***
+*****************
+
+Declaration (Leaf)
+
++++synthesized+++
+Declarations.OK <-  ! ENV.isLocallyDefined(Declaration.ID) 
+Declaration.COMPLETE <- Declarations.OK != null 
+SideEffects {
+	ENV.addDefinition(Declaration.ID,Declaration);
+	if (Declaration.IN)
+		SIG.addFormalInParameter(Declaration.ID,Declaration);
+	if (Declaration.OUT)
+		SIG.addFormalOutParameter(Declaration.ID,Declaration);
+}
+
+*************
+***Program***
+*************
+
+Program : Declarations Statements
+
++++inherited+++
+Program.SCOPE <- new Scope(ENV) 
+SideEffects { 
+	// update global variable
+	ENV = Goal.SCOPE;
+}
+
++++synthesized+++
+Program.OK <- \forall child \in Program.children: child.OK
+Program.COMPLETE <- Program.SCOPE != null && Program.OK != null && \forall child \in Program.children: child.COMPLETE
+SideEffects { 
+	// set ENV complete (no new labels will be added)
+	ENV.setComplete(true);
+	// update global variable ENV
+	ENV = ENV.getPrevious);
+}
+
+**************
+***Function***
+**************
+
+Function : Declarations Statements
+
++++inherited+++
+Function.SCOPE <- new Scope(ENV) 
+Function.SIG <- new Signature() 
+SideEffects { 
+	// update global variables
+	ENV = Function.SCOPE;
+	SIG = Function.SIG;
+}
+
++++synthesized+++
+Function.OK <- \forall child \in Function.children: child.OK
+Function.COMPLETE <- Function.SCOPE != null && Function.SIG != null && Function.OK != null && \forall child \in Function.children: child.COMPLETE
+SideEffects { 
+	// set ENV complete (no new labels will be added)
+	ENV.setComplete(true);
+	// update global variable ENV
+	ENV = ENV.getPrevious);
+}
+
+****************
+***Statements***
+****************
+
+Statements : Statement+
+
++++synthesized+++
+Statements.OK <- \forall child \in Statements.children: child.OK
+Statements.COMPLETE <- Statements.OK != null && \forall child \in Statements.children: child.COMPLETE
+
+********
+***If***
+********
+
+If : Expression Statements Statements?
+
++++inherited+++
+Expression.COERCE <- FALSE 
+
++++synthesized+++
+If.OK <- !ENV.isLocallyDefined(If.LABEL) && Expression.KIND == Boolean && \forall chlid \in If.children: child.OK
+If.COMPLETE <- If.OK != null && \forall child \in If.children: child.COMPLETE
+SideEffects { 
+	if (If.LABEL != null && !ENV.isComplete)
+		ENV.setDefinition(If.LABEL,If);
+}
+
+***********
+***While***
+***********
+
+While : Expression Statements 
+
++++inherited+++
+Expression.COERCE <- FALSE 
+SideEffects { 
+	LOOPS.push(While)
+}
+
++++synthesized+++
+While.OK <- !ENV.isLocallyDefined(While.LABEL) && Expression.KIND == Boolean && \forall child \in While.children: child.OK
+While.COMPLETE <- While.OK != null && \forall child \in While.children: child.COMPLETE
+SideEffects { 
+	LOOPS.pop
+	if (While.LABEL != null && !ENV.isComplete)
+		ENV.setDefinition(While.LABEL,While);
+}
+
+************
+***Assign***
+************
+
+Assign : Variable Expression
+
++++inherited+++
+Expression.COERCE <- Variable.Kind == Real && Expression.Kind == Integer
+
++++synthesized+++
+Assign.OK <- ( Variable.Kind == Real && isNumeric(Expression.KIND) || Variable.Kind == Expression.KIND && Variable.Kind != Error )
+	&& !Variable.READ_ONLY 
+	&& !ENV.isLocallyDefined(Assign.LABEL)
+	&& \forall chlid \in Assign.children: child.OK
+Assign.COMPLETE <- Assign.OK != null && \forall child \in Assign.children: child.COMPLETE
+SideEffects { 
+	if (Assign.LABEL != null && !ENV.isComplete)
+		ENV.setDefinition(Assign.LABEL,Assign);
+}
+
+**********
+***Skip***
+**********
+
+Skip (Leaf)
+
++++synthesized+++
+Skip.OK <- !ENV.isLocallyDefined(Skip.LABEL)
+Skip.COMPLETE <- Skip.OK != null 
+SideEffects { 
+	if (Skip.LABEL != null && !ENV.isComplete)
+		ENV.setDefinition(Skip.LABEL,Skip);
+}
+
+**********
+***Jump***
+**********
+
+Jump (Leaf)
+
++++synthesized+++
+Jump.OK <- !ENV.isLocallyDefined(Jump.LABEL) && (ENV.isComplete => ENV.isLocallyDefined(Jump.TARGET_LABEL))
+Jump.TARGET <- ENV.isComplete => ENV.getLocalDefinition(Jump.TARGET_LABEL))
+Jump.COMPLETE <- Jump.OK != null && Jump.TARGET != null
+SideEffects { 
+	if (Jump.LABEL != null && !ENV.isComplete)
+		ENV.setDefinition(Jump.LABEL,Jump);
+}
+
+**********
+***Cont***
+**********
+
+Cont (Leaf)
+
++++synthesized+++
+Cont.OK <- !ENV.isLocallyDefined(Cont.LABEL)
+Cont.TARGET <- LOOPS.peek()
+Cont.COMPLETE <- Cont.OK != null && Cont.TARGET != null
+SideEffects { 
+	if (Cont.LABEL != null && !ENV.isComplete)
+		ENV.setDefinition(Cont.LABEL,Cont);
+}
+
+***********
+***Break***
+***********
+
+Break (Leaf)
+
++++synthesized+++
+Break.OK <- !ENV.isLocallyDefined(Break.LABEL)
+Break.TARGET <- Break.peek()
+Break.COMPLETE <- Break.OK != null && Break.TARGET != null
+SideEffects { 
+	if (Break.LABEL != null && !Break.isComplete)
+		ENV.setDefinition(Break.LABEL,Break);
+}
+
+*********************
+***UnaryExpression***
+*********************
+UnaryExpression : Expression
+
++++inherited+++
+Expression.COERCE <- false
+
++++synthesized+++
+UnaryExpression.KIND <- 
+	Integer, if (Expression.KIND == Integer && isNumeric(UnaryExpression.OP_CODE)
+	Real, if Expression.KIND == Real && isNumeric(UnaryExpression.OP_CODE)
+	Boolean, if Expression.KIND == Boolean && UnaryExpression.OP_CODE == "NOT"
+	Error, otherwise
+UnaryExpression.OK <- UnaryExpression.KIND != Error && \forall child \in UnaryExpression.children: child.OK
+UnaryExpression.COMPLETE <- (UnaryExpression.KIND != null && UnaryExpression.COERCE != null && Expression.COMPLETE != null)
+
+**********************
+***BinaryExpression***
+**********************
+
+BinaryExpression : Expression Expression
+
++++inherited+++
+Expression[0].COERCE <- Expression[0].KIND == Integer && BinaryExpression.KIND == Real
+Expression[1].COERCE <- Expression[1].KIND == Integer && BinaryExpression.KIND == Real
+
++++synthesized+++
+BinaryExpression.KIND <- 
+	Integer, if Expression[0].KIND == Integer && Expression[1].KIND == Integer && isNumeric(BinaryExpression.OP_CODE) 
+	Real, if (Expression[0].KIND == Real && isNumeric(Expression[1].KIND) || isNumeric(Expression[0].KIND) && Expression[1].KIND == Real) && isNumeric(BinaryExpression.OP_CODE)
+	String, if Expression[0].KIND == String && Expression[1].KIND == String && BinaryExpression.OP_CODE=="+"
+	Boolean, if Expression[0].KIND == Boolean && Expression[1].KIND == Boolean && isLogic(BinaryExpression.OP_CODE)
+	Boolean, if isNumeric(Expression[0].KIND) && isNumeric(Expression[1].KIND) && (isCompareNumeric(BinaryExpression.OP_CODE) || isCompare(BinaryExpression.OP_CODE))
+	Boolean, if Expression[0].KIND == Expression[1].KIND && isCompare(BinaryExpression.OP_CODE))
+	Error, otherwise
+BinaryExpression.OK <- BinaryExpression.KIND != Error && \forall child \in BinaryExpression.children: child.OK
+BinaryExpression.COMPLETE <- (BinaryExpression.KIND != null && BinaryExpression.COERCE != null)
+
+**********
+***Call***
+**********
+
+Call : Expression*
+
++++inherited+++
+Expression[i].COERCE <- Call.TARGET.SIG.getParameter[i].IN && Expression[i].KIND == Integer && Call.TARGET.SIG.getParameter[i].KIND == Real
+
++++synthesized+++
+Call.TARGET <- (ENV.getPrevious.isComplete => ENV.getPrevious.getLocalDefinition(Call.TARGET_ID)
+Call.KIND <- Call.TARGET.KIND 
+Call.OK <- compatible(Call.children, Call.TARGET.SIG.getParameters) && \forall child \in Call.children: child.OK
+Call.COMPLETE <- Call.KIND != null && Call.COERCE != null && Call.TARGET != null && Call.OK \forall child \in Call.children: child.COMPLETE
+
+**************
+***Variable***
+**************
+
+Variable (Leaf)
+
++++synthesized+++
+Variable.DEF <- ENV.getDefinition(Variable.ID)
+Variable.KIND <- Variable.DEF.KIND
+Variable.READ_ONLY <- Variable.DEF.READ_ONLY
+Variable.READ_WRITE <- Variable.DEF.READ_WRITE
+Variable.OK <- ENV.isDefined(Variable.ID) && Variable.KIND != null && Variable.READ_ONLY != null && Variable.READ_WRITE != null 
+
+*****************
+***Int_Literal***
+*****************
+
++++synthesized+++
+IntLiteral.KIND <- Integer
+IntLiteral.OK <- True
+IntLiteral.COMPLETE <- True
+
+********************
+***String_Literal***
+********************
+
++++synthesized+++
+StringLiteral.KIND <- String
+StringLiteral.OK <- True
+StringLiteral.COMPLETE <- True
+
+*********************
+***Boolean_Literal***
+*********************
+
++++synthesized+++
+BooleanLiteral.KIND <- Boolean
+BooleanLiteral.OK <- True
+BooleanLiteral.COMPLETE <- True
+
+******************
+***Real_Literal***
+******************
+
++++synthesized+++
+RealLiteral.KIND <- Real
+RealLiteral.OK <- True
+RealLiteral.COMPLETE <- True
+
+************
+***Macros***
+************
+
+Statement = If
+		| While
+		| Assign
+		| Skip
+		| Jump
+		| Cont
+		| Break
+
+Expression = UnaryExpression 
+		| BinaryExpression
+		| IntLiteral
+		| StringLiteral
+		| BooleanLiteral
+		| RealLiteral
+
+****************
+***Attributes***
+****************
+Boolean COMPLETE
+Boolean OK
+Boolean COERCE
+TypeValues KIND
+OpCodes OP_CODE
+Scope SCOPE
+Signature SIG
+AstNode TARGET
+
+***************
+***Auxiliary***
+***************
+boolean isNumeric(OpCodes opcode)
+	return {"+", "-", "*", "/", "MOD", "**"}.contains(opcode); 
+
+boolean isLogic(OpCodes opcode)
+	return {"AND", "OR", "XOR" }.contains(opcode); 
+
+boolean isCompareNumeric(OpCodes opcode)
+	return {"<", "<=", ">", ">="}.contains(opcode);
+
+boolean isCompare(OpCodes opcode)
+	return {"==", "<>"}.contains(opcode);
+
+isNumeric(TypeValues kind)
+	return {Real, Integer}.contains(kind);
+
+boolean isCompatible (List<AstNode> expressions, Signature sig)
+	true, if
+		same number of actual in-parameters and formal in-paramters	
+		&& i-th actual in-parameter KIND is same or coercible to i-th formal in-paramter KIND
+		&& same number of actual out-parameters and formal out-paramtere	
+		&& i-th formal out-parameter KIND is same or coercible to i-th actual out-paramter
+		&& all actual out-parameter are variables and ! READ_ONLY
+	false, otherwise 
