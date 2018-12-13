@@ -18,6 +18,54 @@ public class ASTConstructListener extends STBaseListener {
     }
 
     @Override
+    public void exitGlobal_variable_declaration_block(STParser.Global_variable_declaration_blockContext ctx) {
+        System.out.println(ctx.getChildCount());
+        id++;
+        ASTNode gv = new ASTNode("global",null,null,id);
+        s.push(gv);
+    }
+
+    @Override
+    public void exitProgram_variable_declaration_block(STParser.Program_variable_declaration_blockContext ctx) {
+        System.out.println(ctx.getChildCount());
+        id++;
+        ASTNode lo = new ASTNode("local",null,null,id);
+        int i = 0;
+        for(STParser.Variable_declarationContext v : ctx.local_variable_declaration_block().variable_declaration()){
+            i+=v.identifier().size();
+        }
+        for(STParser.Access_variable_declarationContext a : ctx.access_variable_declaration_block().access_variable_declaration()){
+            i++;
+        }
+        for(int n = 0; n<i;n++){
+            lo.addChild(s.pop());
+        }
+        s.push(lo);
+    }
+
+    @Override
+    public void exitLocal_variable_declaration_block(STParser.Local_variable_declaration_blockContext ctx) {
+
+    }
+
+    @Override
+    public void exitVariable_declaration(STParser.Variable_declarationContext ctx) {
+        for(STParser.IdentifierContext i :ctx.identifier()){
+            id++;
+            ASTNode lo = new ASTNode("Declaration",ctx.type_specification().getText(),i.getText(),id);
+            s.push(lo);
+        }
+    }
+
+    @Override
+    public void exitAccess_variable_declaration(STParser.Access_variable_declarationContext ctx) {
+        id++;
+        ASTNode lo = new ASTNode(ctx.getChild(ctx.getChildCount()-2).getText(),ctx.type_specification().getText(),ctx.identifier().getText(),id);
+        s.push(lo);
+        System.out.println(ctx.getChild(ctx.getChildCount()-2).getText());
+    }
+
+    @Override
     public void exitExpression(STParser.ExpressionContext ctx) {
         if(!s.empty()){
             if(ctx.getChildCount() == 2){
@@ -57,55 +105,55 @@ public class ASTConstructListener extends STBaseListener {
     public void exitPot(STParser.PotContext ctx) {
         id++;
         ASTNode a = new ASTNode("POT","Numeric",ctx.getText(),id);
-        s.add(a);
+        s.push(a);
     }
 
     @Override
     public void exitMult(STParser.MultContext ctx) {
         id++;
         ASTNode a = new ASTNode("Mult","Numeric",ctx.getText(),id);
-        s.add(a);
+        s.push(a);
     }
 
     @Override
     public void exitAdd(STParser.AddContext ctx) {
         id++;
         ASTNode a = new ASTNode("Add","Numeric",ctx.getText(),id);
-        s.add(a);
+        s.push(a);
     }
     @Override
     public void exitCmp(STParser.CmpContext ctx) {
         id++;
         ASTNode a = new ASTNode("Cmp","CompareNumeric",ctx.getText(),id);
-        s.add(a);
+        s.push(a);
     }
 
     @Override
     public void exitEq(STParser.EqContext ctx) {
         id++;
         ASTNode a = new ASTNode("Eq","Compare",ctx.getText(),id);
-        s.add(a);
+        s.push(a);
     }
 
     @Override
     public void exitNeg(STParser.NegContext ctx) {
         id++;
         ASTNode a = new ASTNode("Neg","Logic",ctx.getText(),id);
-        s.add(a);
+        s.push(a);
     }
 
     @Override
     public void exitAnd(STParser.AndContext ctx) {
         id++;
         ASTNode a = new ASTNode("And","Logic",ctx.getText(),id);
-        s.add(a);
+        s.push(a);
     }
 
     @Override
     public void exitOr(STParser.OrContext ctx) {
         id++;
         ASTNode a = new ASTNode("Or","Logic",ctx.getText(),id);
-        s.add(a);
+        s.push(a);
     }
 
     @Override
@@ -117,27 +165,21 @@ public class ASTConstructListener extends STBaseListener {
     public void exitReal_literal(STParser.Real_literalContext ctx) {
         id++;
         ASTNode a = new ASTNode("Constant","Real",ctx.getText(),id);
-        a.setCOMPLETE(true);
-        a.setOK(true);
-        s.add(a);
+        s.push(a);
     }
 
     @Override
     public void exitInteger_literal(STParser.Integer_literalContext ctx) {
         id++;
         ASTNode a = new ASTNode("Constant","Int",ctx.getText(),id);
-        a.setCOMPLETE(true);
-        a.setOK(true);
-        s.add(a);
+        s.push(a);
     }
 
     @Override
     public void exitBoolean_literal(STParser.Boolean_literalContext ctx) {
         id++;
         ASTNode a = new ASTNode("Constant","Bool",ctx.getText(),id);
-        a.setCOMPLETE(true);
-        a.setOK(true);
-        s.add(a);
+        s.push(a);
     }
 
     @Override
@@ -145,9 +187,7 @@ public class ASTConstructListener extends STBaseListener {
         id++;
         String string = ctx.getText().substring(1,ctx.getText().length()-1);
         ASTNode a = new ASTNode("Constant","String",string,id);
-        a.setCOMPLETE(true);
-        a.setOK(true);
-        s.add(a);
+        s.push(a);
     }
 
     @Override

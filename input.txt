@@ -1,3 +1,7 @@
+VAR_GLOBAL
+ c,d :INT;
+ e,f :INT;
+END_VAR
 PROGRAM function3
 VAR_ACCESS
  outInt : INT READ_WRITE;

@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Stack;
 
 import org.antlr.v4.gui.Trees;
 import org.antlr.v4.runtime.*;
@@ -125,15 +126,16 @@ public class Main {
         ASTNode current = start;
         if (current.getName().equals("Goal")){
             //inh
+            current.setSCOPE(new Scope(null));
+            current.setLOOPS(new Stack<>());
             semanticAnalysis(current.getChildren().get(0));
             ASTNode child =current.getChildren().get(0);
             //syn
-            current.setCOMPLETE(child.getCOMPLETE());
-            current.setOK(!child.getKind().contains("Error"));
-            current.getChildren().get(0).setCoerce(false);
-
+            current.setOK(current.isOk());
+            current.setCOMPLETE(current.getSCOPE() != null && current.getOK() != null && current.getLOOPS() !=null &&current.isComplete());
         }else if (current.getName().equals("Constant")){
             current.setCOMPLETE(true);
+            current.setOK(true);
             current.setKind(current.getArgumentType());
 
         }else if(current.getArgumentType().equals("UE")){

@@ -38,8 +38,8 @@ Declarations.COMPLETE <- Declarations.OK != null && \forall child \in Declaratio
 Declaration (Leaf)
 
 +++synthesized+++
-Declarations.OK <-  ! ENV.isLocallyDefined(Declaration.ID) 
-Declaration.COMPLETE <- Declarations.OK != null 
+Declaration.OK <-  ! ENV.isLocallyDefined(Declaration.ID)
+Declaration.COMPLETE <- Declaration.OK != null
 SideEffects {
 	ENV.addDefinition(Declaration.ID,Declaration);
 	if (Declaration.IN)

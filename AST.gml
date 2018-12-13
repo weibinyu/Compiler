@@ -4,48 +4,30 @@ graph [
 		label "Goal null"
 	]
 	node [
-		id "7"
+		id "19"
 		label "Add BE + null null"
 	]
 	node [
-		id "4"
-		label "Constant BE 2 null null"
+		id "16"
+		label "Declaration INT i null null"
+	]
+	edge [
+		id "19 to 16"
+		source "19"
+		target "16"
 	]
 	node [
-		id "1"
-		label "Constant Int 1 true null"
+		id "18"
+		label "Constant Int 1 null null"
 	]
 	edge [
-		id "4 to 1"
-		source "4"
-		target "1"
-	]
-	node [
-		id "3"
-		label "Add Numeric + null null"
+		id "19 to 18"
+		source "19"
+		target "18"
 	]
 	edge [
-		id "4 to 3"
-		source "4"
-		target "3"
-	]
-	edge [
-		id "7 to 4"
-		source "7"
-		target "4"
-	]
-	node [
-		id "6"
-		label "Constant Int 1 true null"
-	]
-	edge [
-		id "7 to 6"
-		source "7"
-		target "6"
-	]
-	edge [
-		id "0 to 7"
+		id "0 to 19"
 		source "0"
-		target "7"
+		target "19"
 	]
 ]
