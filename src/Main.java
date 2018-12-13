@@ -166,7 +166,33 @@ public class Main {
             //inh TODO
             current.setSCOPE(new Scope(ENV));
             ENV = current.getSCOPE();
+
+            for (ASTNode a :current.getChildren()) {
+                semanticAnalysis(a);
+            }
             //syn
+            current.setOK(current.isOk());
+            current.setCOMPLETE(current.getSCOPE()!=null && current.getOK()!=null&&current.isComplete());
+            ENV.setComplete(true);
+            ENV = ENV.getOuter();
+        }else if(current.getName().equals("Function")){
+            //inh
+            current.setSCOPE(new Scope(ENV));
+            //current.setSIG();
+            ENV = current.getSCOPE();
+            //SIG = current.getSIG();
+
+            //syn
+            current.setOK(current.isOk());
+            //current.setCOMPLETE(current.getSCOPE()!=null&&);
+        }else if(current.getName().equals("Stats")){
+            current.setOK(current.isOk());
+            current.setCOMPLETE(current.getOK()!=null&&current.isComplete());
+        }else if(current.getName().equals("IF")){
+            //inh
+            current.getChildren().get(0).setCoerce(false);
+            //syn
+
         }else if(current.getName().equals("Constant")){
             current.setCOMPLETE(true);
             current.setOK(true);
