@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Stack;
 
 public class ASTNode{
@@ -139,5 +140,9 @@ public class ASTNode{
             }
         }
         return true;
+    }
+    //reverse children order
+    public void reverse(){
+        Collections.reverse(this.children);
     }
 }

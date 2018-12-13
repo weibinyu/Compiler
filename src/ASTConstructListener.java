@@ -44,10 +44,8 @@ public class ASTConstructListener extends STBaseListener {
     public void exitProgram_declaration(STParser.Program_declarationContext ctx) {
         id++;
         ASTNode p = new ASTNode("Program",null,ctx.identifier().getText(),id);
-        for(int i = 0;i<ctx.statementList().getChildCount();i++){
-            p.addChild(s.pop());
-        }
-        if(ctx.program_variable_declaration_block().getChildCount()!=0){
+        p.addChild(s.pop());
+        if(ctx.program_variable_declaration_block()!=null){
             p.addChild(s.pop());
         }
         s.push(p);
@@ -147,9 +145,50 @@ public class ASTConstructListener extends STBaseListener {
     }
 
     @Override
+    public void exitFunction_call(STParser.Function_callContext ctx) {
+        id++;
+        ASTNode v = new ASTNode(ctx.identifier().getText(),"FC",null,id);
+        if(ctx.parameter_list()!=null){
+            for(STParser.ExpressionContext e : ctx.parameter_list().expression()){
+                v.addChild(s.pop());
+            }
+        }
+        s.push(v);
+
+    }
+
+    @Override
+    public void exitStatementList(STParser.StatementListContext ctx) {
+        id++;
+        ASTNode v = new ASTNode("States",null,null,id);
+        for(int i = 0;i<ctx.statement().size();i++){
+            v.addChild(s.pop());
+        }
+        s.push(v);
+    }
+
+    @Override
+    public void exitIf_statement(STParser.If_statementContext ctx) {
+        id++;
+        ASTNode v = new ASTNode("IF",null,null,id);
+        v.addChild(s.pop());
+        v.addChild(s.pop());
+        if(ctx.else_part()!=null){
+            v.addChild(s.pop());
+        }
+        s.push(v);
+    }
+
+    @Override
+    public void exitWhile_statement(STParser.While_statementContext ctx) {
+        super.exitWhile_statement(ctx);
+    }
+
+    @Override
     public void exitAssignment_statement(STParser.Assignment_statementContext ctx) {
         ASTNode right = s.pop();
         ASTNode left = s.pop();
+
 
         id++;
         ASTNode be = new ASTNode("State","Assign",":=",id);
