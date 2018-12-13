@@ -17,6 +17,8 @@ public class Main {
     private static int id = 0;
     private static Graph task = new MultiGraph("task");
     private static FileSinkGML out2 = new FileSinkGML();
+    private static Scope ENV;
+    private static Stack<ASTNode> LOOPS;
     public static void main(String[] args) {
 
         try {
@@ -24,7 +26,7 @@ public class Main {
             ast.addSink(out1);
             ast.setStrict(false);
 
-            CharStream codePointCharStream = CharStreams.fromFileName("input.txt");
+            CharStream codePointCharStream = CharStreams.fromFileName("input2.txt");
             STLexer lexer = new STLexer(codePointCharStream);
             STParser parser = new STParser(new CommonTokenStream(lexer));
 
@@ -128,12 +130,44 @@ public class Main {
             //inh
             current.setSCOPE(new Scope(null));
             current.setLOOPS(new Stack<>());
+            ENV = current.getSCOPE();
+            LOOPS = current.getLOOPS();
+
             semanticAnalysis(current.getChildren().get(0));
-            ASTNode child =current.getChildren().get(0);
             //syn
             current.setOK(current.isOk());
-            current.setCOMPLETE(current.getSCOPE() != null && current.getOK() != null && current.getLOOPS() !=null &&current.isComplete());
-        }else if (current.getName().equals("Constant")){
+            current.setCOMPLETE(current.getSCOPE() != null && current.getOK() != null && current.getLOOPS() !=null
+                    &&current.isComplete());
+            ENV.setComplete(true);
+            ENV = ENV.getOuter();
+
+        }else if(current.getName().equals("Global") || current.getName().equals("Local")){
+            //inh
+            for (ASTNode a: current.getChildren()) {
+                semanticAnalysis(a);
+            }
+            //syn
+            current.setOK(current.isOk());
+            current.setCOMPLETE(current.getOK()!=null&&current.isComplete());
+
+        }else if(current.getName().equals("Declaration")){
+            //inh
+
+            //syn
+            current.setOK(ENV.isDefined(current.getOP_code()));
+            current.setCOMPLETE(current.getOK()!=null);
+            /*ENV.setDefinition(current.getOP_code(),current);
+            if (Declaration.IN)
+                SIG.addFormalInParameter(Declaration.ID,Declaration);
+            if (Declaration.OUT)
+                SIG.addFormalOutParameter(Declaration.ID,Declaration);
+             */
+        }else if(current.getName().equals("Program")){
+            //inh TODO
+            current.setSCOPE(new Scope(ENV));
+            ENV = current.getSCOPE();
+            //syn
+        }else if(current.getName().equals("Constant")){
             current.setCOMPLETE(true);
             current.setOK(true);
             current.setKind(current.getArgumentType());

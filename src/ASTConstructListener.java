@@ -1,8 +1,6 @@
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
-
-import java.lang.reflect.Array;
 import java.util.Stack;
 
 public class ASTConstructListener extends STBaseListener {
@@ -21,6 +19,7 @@ public class ASTConstructListener extends STBaseListener {
         for(int n = 0; n<i;n++){
             goal.addChild(s.pop());
         }
+        goal.reverse();
     }
 
     @Override
@@ -44,10 +43,11 @@ public class ASTConstructListener extends STBaseListener {
     public void exitProgram_declaration(STParser.Program_declarationContext ctx) {
         id++;
         ASTNode p = new ASTNode("Program",null,ctx.identifier().getText(),id);
-        p.addChild(s.pop());
+        ASTNode st = s.pop();
         if(ctx.program_variable_declaration_block()!=null){
             p.addChild(s.pop());
         }
+        p.addChild(st);
         s.push(p);
     }
 
@@ -74,12 +74,11 @@ public class ASTConstructListener extends STBaseListener {
     public void exitFunction_declaration(STParser.Function_declarationContext ctx) {
         id++;
         ASTNode lo = new ASTNode("Function",ctx.type_specification().getText(),ctx.identifier().getText(),id);
-        for(int i = 0;i<ctx.statementList().getChildCount();i++){
+        ASTNode st = s.pop();
+        if(ctx.function_variable_declaration_blocks()!=null){
             lo.addChild(s.pop());
         }
-        if(ctx.function_variable_declaration_blocks().getChildCount()!=0){
-            lo.addChild(s.pop());
-        }
+        lo.addChild(st);
         s.push(lo);
     }
 
@@ -153,6 +152,7 @@ public class ASTConstructListener extends STBaseListener {
                 v.addChild(s.pop());
             }
         }
+        v.reverse();
         s.push(v);
 
     }
@@ -160,10 +160,11 @@ public class ASTConstructListener extends STBaseListener {
     @Override
     public void exitStatementList(STParser.StatementListContext ctx) {
         id++;
-        ASTNode v = new ASTNode("States",null,null,id);
+        ASTNode v = new ASTNode("Stats",null,null,id);
         for(int i = 0;i<ctx.statement().size();i++){
             v.addChild(s.pop());
         }
+        v.reverse();
         s.push(v);
     }
 
@@ -176,12 +177,17 @@ public class ASTConstructListener extends STBaseListener {
         if(ctx.else_part()!=null){
             v.addChild(s.pop());
         }
+        v.reverse();
         s.push(v);
     }
 
     @Override
     public void exitWhile_statement(STParser.While_statementContext ctx) {
-        super.exitWhile_statement(ctx);
+        id++;
+        ASTNode be = new ASTNode("While",null,null,id);
+        be.addChild(s.pop());   //expression and statmentList
+        be.addChild(s.pop());
+        s.push(be);
     }
 
     @Override
@@ -191,7 +197,7 @@ public class ASTConstructListener extends STBaseListener {
 
 
         id++;
-        ASTNode be = new ASTNode("State","Assign",":=",id);
+        ASTNode be = new ASTNode("Stat","Assign",":=",id);
         be.addChild(left);
         be.addChild(right);
         s.push(be);

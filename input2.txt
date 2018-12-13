@@ -1,1 +1,26 @@
-NOT(((3 ** 3)>(4 MOD 3) AND ('B' + 'S'=="BS")) XOR 1.2 == 1.2)
+PROGRAM GCD
+ VAR_ACCESS
+ in : INT READ_ONLY;
+ out : INT READ_WRITE;
+ END_VAR
+ VAR
+ a,b : INT;
+ END_VAR
+ a := in;
+ b := in;
+ out := gcd(a,b);
+END_PROGRAM
+FUNCTION gcd : INT
+ VAR_INPUT
+ a,b : INT;
+ END_VAR
+ IF a == b THEN
+ gcd := a;
+ ELSE
+ IF a < b THEN
+ gcd := gcd(b,a);
+ ELSE
+ gcd := gcd(b, a-b);
+ END_IF
+ END_IF
+END_FUNCTION 
