@@ -13,23 +13,50 @@ public class ASTConstructListener extends STBaseListener {
 
     @Override
     public void exitGoal(STParser.GoalContext ctx) {
-        ASTNode a = s.pop();
-        goal.addChild(a);
+        int i = 1;
+        if(ctx.global_variable_declaration_block() != null){
+            i++;
+        }
+        i += ctx.function_declaration().size();
+        for(int n = 0; n<i;n++){
+            goal.addChild(s.pop());
+        }
     }
 
     @Override
     public void exitGlobal_variable_declaration_block(STParser.Global_variable_declaration_blockContext ctx) {
-        System.out.println(ctx.getChildCount());
         id++;
-        ASTNode gv = new ASTNode("global",null,null,id);
-        s.push(gv);
+        ASTNode gv = new ASTNode("Global",null,null,id);
+        int i = 0;
+        for(STParser.Variable_declarationContext v : ctx.variable_declaration()){
+            i+=v.identifier().size();
+        }
+        if(i!=0){
+            for(int n = 0; n<i;n++){
+                gv.addChild(s.pop());
+            }
+            s.push(gv);
+        }
+
+    }
+
+    @Override
+    public void exitProgram_declaration(STParser.Program_declarationContext ctx) {
+        id++;
+        ASTNode p = new ASTNode("Program",null,ctx.identifier().getText(),id);
+        for(int i = 0;i<ctx.statementList().getChildCount();i++){
+            p.addChild(s.pop());
+        }
+        if(ctx.program_variable_declaration_block().getChildCount()!=0){
+            p.addChild(s.pop());
+        }
+        s.push(p);
     }
 
     @Override
     public void exitProgram_variable_declaration_block(STParser.Program_variable_declaration_blockContext ctx) {
-        System.out.println(ctx.getChildCount());
         id++;
-        ASTNode lo = new ASTNode("local",null,null,id);
+        ASTNode lo = new ASTNode("Local",null,null,id);
         int i = 0;
         for(STParser.Variable_declarationContext v : ctx.local_variable_declaration_block().variable_declaration()){
             i+=v.identifier().size();
@@ -37,15 +64,43 @@ public class ASTConstructListener extends STBaseListener {
         for(STParser.Access_variable_declarationContext a : ctx.access_variable_declaration_block().access_variable_declaration()){
             i++;
         }
-        for(int n = 0; n<i;n++){
+        if(i!=0){
+            for(int n = 0; n<i;n++){
+                lo.addChild(s.pop());
+            }
+            s.push(lo);
+        }
+    }
+
+    @Override
+    public void exitFunction_declaration(STParser.Function_declarationContext ctx) {
+        id++;
+        ASTNode lo = new ASTNode("Function",ctx.type_specification().getText(),ctx.identifier().getText(),id);
+        for(int i = 0;i<ctx.statementList().getChildCount();i++){
+            lo.addChild(s.pop());
+        }
+        if(ctx.function_variable_declaration_blocks().getChildCount()!=0){
             lo.addChild(s.pop());
         }
         s.push(lo);
     }
 
     @Override
-    public void exitLocal_variable_declaration_block(STParser.Local_variable_declaration_blockContext ctx) {
-
+    public void exitFunction_variable_declaration_blocks(STParser.Function_variable_declaration_blocksContext ctx) {
+        id++;
+        int i = 0;
+        ASTNode lo = new ASTNode("Local",null,null,id);
+        for(STParser.Function_variable_declaration_blockContext f : ctx.function_variable_declaration_block()){
+            for(STParser.Variable_declarationContext v : f.variable_declaration()){
+                i+=v.identifier().size();
+            }
+        }
+        if(i!=0){
+            for(int n = 0; n<i;n++){
+                lo.addChild(s.pop());
+            }
+            s.push(lo);
+        }
     }
 
     @Override
@@ -60,9 +115,9 @@ public class ASTConstructListener extends STBaseListener {
     @Override
     public void exitAccess_variable_declaration(STParser.Access_variable_declarationContext ctx) {
         id++;
-        ASTNode lo = new ASTNode(ctx.getChild(ctx.getChildCount()-2).getText(),ctx.type_specification().getText(),ctx.identifier().getText(),id);
+        ASTNode lo = new ASTNode(ctx.getChild(ctx.getChildCount()-2).getText(),
+                ctx.type_specification().getText(),ctx.identifier().getText(),id);
         s.push(lo);
-        System.out.println(ctx.getChild(ctx.getChildCount()-2).getText());
     }
 
     @Override
@@ -89,6 +144,18 @@ public class ASTConstructListener extends STBaseListener {
             }
         }
 
+    }
+
+    @Override
+    public void exitAssignment_statement(STParser.Assignment_statementContext ctx) {
+        ASTNode right = s.pop();
+        ASTNode left = s.pop();
+
+        id++;
+        ASTNode be = new ASTNode("State","Assign",":=",id);
+        be.addChild(left);
+        be.addChild(right);
+        s.push(be);
     }
 
     @Override
@@ -159,6 +226,12 @@ public class ASTConstructListener extends STBaseListener {
     @Override
     public void exitConstant(STParser.ConstantContext ctx) {
         super.exitConstant(ctx);
+    }
+
+    @Override
+    public void exitVariable(STParser.VariableContext ctx) {
+        id++;
+        s.push(new ASTNode("Variable",null,ctx.getText(),id));
     }
 
     @Override

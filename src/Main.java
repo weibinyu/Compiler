@@ -49,7 +49,7 @@ public class Main {
             Interpreter(g.getFirst());
             out2.end();
             */
-            Trees.inspect(tree, parser);
+            //Trees.inspect(tree, parser);
         }catch (IOException e) {
             System.err.println("Input file not found.");
             return;
