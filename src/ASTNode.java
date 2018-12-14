@@ -10,16 +10,21 @@ public class ASTNode{
     private ArrayList<ASTNode> children = new ArrayList<>();
     private String Kind;
     private Boolean Coerce;
-    private Boolean COMPLETE;
-    private Boolean OK;
+    private Boolean COMPLETE = false;
+    private Boolean OK = false;
+    private Boolean RO = false;
+    private Boolean RW = false;
     private TaskNode first;
     private TaskNode last;
     private TaskNode next;
     private TaskNode pred;
     private Scope SCOPE;
-    //private Signature SIG;
-    private ASTNode TARGET;
+    private Signature SIG;
+    public ASTNode TARGET;
     private Stack<ASTNode> LOOPS;
+    public boolean In;
+    public boolean Out;
+    public String Label;
 
 
     public ASTNode(String name,String at,String op,int id) {
@@ -123,19 +128,43 @@ public class ASTNode{
         this.SCOPE = SCOPE;
     }
 
+    public Signature getSIG() {
+        return SIG;
+    }
+
+    public void setSIG(Signature SIG) {
+        this.SIG = SIG;
+    }
+
+    public Boolean getRO() {
+        return RO;
+    }
+
+    public void setRO(Boolean RO) {
+        this.RO = RO;
+    }
+
+    public Boolean getRW() {
+        return RW;
+    }
+
+    public void setRW(Boolean RW) {
+        this.RW = RW;
+    }
+
     //check if all children is ok
-    public boolean isOk(){
+    public boolean childOk(){
         for(ASTNode n : this.children){
             if(!n.getOK()){
-                return false;
+                    return false;
             }
         }
         return true;
     }
     //check if all children is complete
-    public boolean isComplete(){
+    public boolean childComplete(){
         for(ASTNode n : this.children){
-            if(!n.getCOMPLETE()){
+            if (!n.getCOMPLETE()){
                 return false;
             }
         }

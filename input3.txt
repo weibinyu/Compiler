@@ -1,0 +1,16 @@
+PROGRAM Example
+
+VAR
+x,y : INT;
+res : INT;
+END_VAR
+
+x := 3 + 4*5;
+y := 7;
+
+IF x > 1 
+THEN res := x MOD y;
+ELSE res := -1;
+END_IF
+
+END_PROGRAM

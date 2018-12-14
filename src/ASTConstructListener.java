@@ -5,7 +5,7 @@ import java.util.Stack;
 
 public class ASTConstructListener extends STBaseListener {
     private Stack<ASTNode> s = new Stack<>();
-    private int id = 0;
+    private int id = 1;
     private int total = 0;
     private ASTNode goal = new ASTNode("Goal",null,null,id);
 
@@ -56,24 +56,30 @@ public class ASTConstructListener extends STBaseListener {
         id++;
         ASTNode lo = new ASTNode("Local",null,null,id);
         int i = 0;
-        for(STParser.Variable_declarationContext v : ctx.local_variable_declaration_block().variable_declaration()){
-            i+=v.identifier().size();
-        }
-        for(STParser.Access_variable_declarationContext a : ctx.access_variable_declaration_block().access_variable_declaration()){
-            i++;
-        }
-        if(i!=0){
-            for(int n = 0; n<i;n++){
-                lo.addChild(s.pop());
+        if(ctx.local_variable_declaration_block()!=null){
+            for(STParser.Variable_declarationContext v : ctx.local_variable_declaration_block().variable_declaration()){
+                i+=v.identifier().size();
             }
-            s.push(lo);
         }
+        if(ctx.access_variable_declaration_block()!=null){
+            for(STParser.Access_variable_declarationContext a : ctx.access_variable_declaration_block().access_variable_declaration()){
+                i++;
+            }
+        }
+        for(int n = 0; n<i;n++){
+            lo.addChild(s.pop());
+        }
+        s.push(lo);
     }
 
     @Override
     public void exitFunction_declaration(STParser.Function_declarationContext ctx) {
         id++;
         ASTNode lo = new ASTNode("Function",ctx.type_specification().getText(),ctx.identifier().getText(),id);
+        String f = ctx.type_specification().getText().substring(0,1).toUpperCase();
+        String r = ctx.type_specification().getText().substring(1).toLowerCase();
+        lo.setKind(f+r);
+
         ASTNode st = s.pop();
         if(ctx.function_variable_declaration_blocks()!=null){
             lo.addChild(s.pop());
@@ -101,10 +107,33 @@ public class ASTConstructListener extends STBaseListener {
     }
 
     @Override
+    public void exitFunction_variable_declaration_block(STParser.Function_variable_declaration_blockContext ctx) {
+        for(STParser.Variable_declarationContext v : ctx.variable_declaration()){
+            ASTNode tmp = s.pop();
+            tmp.In = false;
+            tmp.Out = false;
+            if(ctx.variable_declaration_type().getText().equals("VAR_INPUT")){
+                tmp.In = true;
+            }else if(ctx.variable_declaration_type().getText().equals("VAR_OUTPUT")){
+                tmp.Out = true;
+            }else if(ctx.variable_declaration_type().getText().equals("VAR_IN_OUT")) {
+                tmp.In = true;
+                tmp.Out = true;
+            }
+            s.push(tmp);
+        }
+    }
+
+    @Override
     public void exitVariable_declaration(STParser.Variable_declarationContext ctx) {
         for(STParser.IdentifierContext i :ctx.identifier()){
             id++;
             ASTNode lo = new ASTNode("Declaration",ctx.type_specification().getText(),i.getText(),id);
+            String f = ctx.type_specification().getText().substring(0,1).toUpperCase();
+            String r = ctx.type_specification().getText().substring(1).toLowerCase();
+            lo.setKind(f+r);
+            lo.setRW(false);
+            lo.setRO(false);
             s.push(lo);
         }
     }
@@ -112,8 +141,17 @@ public class ASTConstructListener extends STBaseListener {
     @Override
     public void exitAccess_variable_declaration(STParser.Access_variable_declarationContext ctx) {
         id++;
-        ASTNode lo = new ASTNode(ctx.getChild(ctx.getChildCount()-2).getText(),
-                ctx.type_specification().getText(),ctx.identifier().getText(),id);
+        ASTNode lo = new ASTNode("Declaration",ctx.getChild(ctx.getChildCount()-2).getText()
+                ,ctx.identifier().getText(),id);
+        String f = ctx.type_specification().getText().substring(0,1).toUpperCase();
+        String r = ctx.type_specification().getText().substring(1).toLowerCase();
+        lo.setKind(f+r);
+        lo.setRW(false);
+        lo.setRO(false);
+        if(lo.getArgumentType().equals("READ_ONLY"))
+            lo.setRO(true);
+        if(lo.getArgumentType().equals("READ_WRITE"))
+            lo.setRW(true);
         s.push(lo);
     }
 
@@ -169,6 +207,35 @@ public class ASTConstructListener extends STBaseListener {
     }
 
     @Override
+    public void exitLabeled_statement(STParser.Labeled_statementContext ctx) {
+        ASTNode st = s.pop();
+        st.Label = ctx.identifier().getText();
+        s.push(st);
+    }
+
+    @Override
+    public void exitExit_statement(STParser.Exit_statementContext ctx) {
+        id++;
+        ASTNode v = new ASTNode("EXIT",null,null,id);
+        s.push(v);
+    }
+
+    @Override
+    public void exitContinue_statement(STParser.Continue_statementContext ctx) {
+        id++;
+        ASTNode v = new ASTNode("CONT",null,null,id);
+        s.push(v);
+    }
+
+    @Override
+    public void exitJump_statement(STParser.Jump_statementContext ctx) {
+        id++;
+        ASTNode v = new ASTNode("JMP",null,null,id);
+        v.addChild(s.pop());
+        s.push(v);
+    }
+
+    @Override
     public void exitIf_statement(STParser.If_statementContext ctx) {
         id++;
         ASTNode v = new ASTNode("IF",null,null,id);
@@ -197,7 +264,7 @@ public class ASTConstructListener extends STBaseListener {
 
 
         id++;
-        ASTNode be = new ASTNode("Stat","Assign",":=",id);
+        ASTNode be = new ASTNode("Assign",null,":=",id);
         be.addChild(left);
         be.addChild(right);
         s.push(be);

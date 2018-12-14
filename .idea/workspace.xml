@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="49f0e0e7-27e6-4128-b654-421b1736be2b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Signature.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AST.gml" beforeDir="false" afterPath="$PROJECT_DIR$/AST.gml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ASTConstructListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ASTConstructListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ASTNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Scope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scope.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,13 +19,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="453">
-              <caret line="194" selection-start-line="194" selection-end-line="194" />
+            <state relative-caret-position="197">
+              <caret line="252" selection-start-line="252" selection-end-line="252" />
               <folding>
+                <element signature="imports" expanded="true" />
                 <element signature="method#drawTask#0;class#Main#0" />
+                <element signature="method#taskConstruct#0;class#Main#0" />
+                <element signature="method#Interpreter#0;class#Main#0" />
                 <element signature="method#isNumeric#0;class#Main#0" />
                 <element signature="method#isNumericValue#0;class#Main#0" />
                 <element signature="method#isLogic#0;class#Main#0" />
@@ -31,11 +39,45 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ST2.ag">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1035">
-              <caret line="44" column="4" selection-start-line="44" selection-start-column="4" selection-end-line="47" selection-end-column="62" />
+            <state relative-caret-position="4151">
+              <caret line="286" column="46" lean-forward="true" selection-start-line="286" selection-start-column="46" selection-end-line="286" selection-end-column="46" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Signature.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="94">
+              <caret line="9" column="52" selection-start-line="9" selection-start-column="52" selection-end-line="9" selection-end-column="52" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#153#169#0" expanded="true" />
+                <element signature="e#347#348#0" expanded="true" />
+                <element signature="e#382#383#0" expanded="true" />
+                <element signature="e#485#486#0" expanded="true" />
+                <element signature="e#517#518#0" expanded="true" />
+                <element signature="e#630#631#0" expanded="true" />
+                <element signature="e#655#656#0" expanded="true" />
+                <element signature="e#703#704#0" expanded="true" />
+                <element signature="e#729#730#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ASTNode.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="209">
+              <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
+              <folding>
+                <element signature="e#3539#3540#0" expanded="true" />
+                <element signature="e#3589#3590#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -43,13 +85,18 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Scope.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="16" column="42" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
+            <state relative-caret-position="228">
+              <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
               <folding>
-                <element signature="e#188#189#0" expanded="true" />
-                <element signature="e#222#223#0" expanded="true" />
-                <element signature="e#263#264#0" expanded="true" />
-                <element signature="e#306#307#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#194#195#0" expanded="true" />
+                <element signature="e#228#229#0" expanded="true" />
+                <element signature="e#383#384#0" expanded="true" />
+                <element signature="e#421#422#0" expanded="true" />
+                <element signature="e#830#831#0" expanded="true" />
+                <element signature="e#905#906#0" expanded="true" />
+                <element signature="e#972#973#0" expanded="true" />
+                <element signature="e#1061#1062#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -58,17 +105,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ST.g4">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="748">
-              <caret line="44" column="35" selection-start-line="44" selection-start-column="35" selection-end-line="44" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ASTNode.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="19" column="6" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
+            <state relative-caret-position="285">
+              <caret line="135" column="17" lean-forward="true" selection-start-line="135" selection-start-column="17" selection-end-line="135" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -76,8 +114,27 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ASTConstructListener.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1009">
-              <caret line="106" column="38" selection-start-line="106" selection-start-column="38" selection-end-line="106" selection-end-column="49" />
+            <state relative-caret-position="289">
+              <caret line="76" column="13" selection-start-line="76" selection-start-column="13" selection-end-line="76" selection-end-column="13" />
+              <folding>
+                <element signature="e#8983#8984#0" expanded="true" />
+                <element signature="e#9110#9111#0" expanded="true" />
+                <element signature="e#10598#10599#0" expanded="true" />
+                <element signature="e#11722#11723#0" expanded="true" />
+                <element signature="e#11829#11830#0" expanded="true" />
+                <element signature="e#11935#11936#0" expanded="true" />
+                <element signature="e#11438#11439#0" expanded="true" />
+                <element signature="e#11465#11466#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gen/STParser.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="285" selection-start-line="285" selection-end-line="285" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -96,8 +153,13 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>sys</find>
       <find>system</find>
+      <find>sig</find>
+      <find>LABEL</find>
+      <find>i++</find>
+      <find>sys</find>
+      <find>Int</find>
+      <find>Sig</find>
     </findStrings>
     <dirStrings>
       <dir>C:\Users\weibin\IdeaProjects\Compiler</dir>
@@ -122,10 +184,11 @@
         <option value="$PROJECT_DIR$/TASK.gml" />
         <option value="$PROJECT_DIR$/ST.g4" />
         <option value="$PROJECT_DIR$/ST2.ag" />
-        <option value="$PROJECT_DIR$/src/ASTConstructListener.java" />
         <option value="$PROJECT_DIR$/src/Scope.java" />
-        <option value="$PROJECT_DIR$/src/ASTNode.java" />
+        <option value="$PROJECT_DIR$/src/Signature.java" />
+        <option value="$PROJECT_DIR$/src/ASTConstructListener.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
+        <option value="$PROJECT_DIR$/src/ASTNode.java" />
       </list>
     </option>
   </component>
@@ -147,6 +210,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -169,7 +233,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -177,7 +240,7 @@
     <property name="$PROJECT_DIR$/src/ST.g4::/gen-listener" value="true" />
     <property name="$PROJECT_DIR$/src/ST.g4::/gen-visitor" value="true" />
     <property name="OverrideImplement.combined" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544733715705" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544815661324" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../rr222ge_Assign1" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
@@ -248,10 +311,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.2065053" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20628998" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -260,7 +322,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.329718" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.2700491" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.26898047" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3991323" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -281,7 +343,7 @@
       <window_info anchor="right" id="Palette&#9;" order="7" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2065053" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20628998" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -330,13 +392,6 @@
       </provider>
     </entry>
     <entry file="jar://D:/Program Files/Java/jdk-9.0.4/lib/src.zip!/java.base/java/lang/Object.java" />
-    <entry file="file://$PROJECT_DIR$/gen/STParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" selection-start-line="3" selection-end-line="3" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/Jars/grail-2015-11-04.jar!/grail/simpletree/Tree.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -419,66 +474,119 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ST.ag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1254" />
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scope.java">
+    <entry file="file://$PROJECT_DIR$/gen/STParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="16" column="42" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
-          <folding>
-            <element signature="e#188#189#0" expanded="true" />
-            <element signature="e#222#223#0" expanded="true" />
-            <element signature="e#263#264#0" expanded="true" />
-            <element signature="e#306#307#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ST.g4">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="44" column="35" selection-start-line="44" selection-start-column="35" selection-end-line="44" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ASTNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="19" column="6" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ASTConstructListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1009">
-          <caret line="106" column="38" selection-start-line="106" selection-start-column="38" selection-end-line="106" selection-end-column="49" />
+        <state relative-caret-position="216">
+          <caret line="285" selection-start-line="285" selection-end-line="285" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/util/ArrayList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="432" selection-start-line="432" selection-end-line="432" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ST2.ag">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4151">
+          <caret line="286" column="46" lean-forward="true" selection-start-line="286" selection-start-column="46" selection-end-line="286" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scope.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#194#195#0" expanded="true" />
+            <element signature="e#228#229#0" expanded="true" />
+            <element signature="e#383#384#0" expanded="true" />
+            <element signature="e#421#422#0" expanded="true" />
+            <element signature="e#830#831#0" expanded="true" />
+            <element signature="e#905#906#0" expanded="true" />
+            <element signature="e#972#973#0" expanded="true" />
+            <element signature="e#1061#1062#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ST.g4">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="135" column="17" lean-forward="true" selection-start-line="135" selection-start-column="17" selection-end-line="135" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Signature.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="94">
+          <caret line="9" column="52" selection-start-line="9" selection-start-column="52" selection-end-line="9" selection-end-column="52" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#153#169#0" expanded="true" />
+            <element signature="e#347#348#0" expanded="true" />
+            <element signature="e#382#383#0" expanded="true" />
+            <element signature="e#485#486#0" expanded="true" />
+            <element signature="e#517#518#0" expanded="true" />
+            <element signature="e#630#631#0" expanded="true" />
+            <element signature="e#655#656#0" expanded="true" />
+            <element signature="e#703#704#0" expanded="true" />
+            <element signature="e#729#730#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ASTConstructListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="76" column="13" selection-start-line="76" selection-start-column="13" selection-end-line="76" selection-end-column="13" />
+          <folding>
+            <element signature="e#8983#8984#0" expanded="true" />
+            <element signature="e#9110#9111#0" expanded="true" />
+            <element signature="e#10598#10599#0" expanded="true" />
+            <element signature="e#11722#11723#0" expanded="true" />
+            <element signature="e#11829#11830#0" expanded="true" />
+            <element signature="e#11935#11936#0" expanded="true" />
+            <element signature="e#11438#11439#0" expanded="true" />
+            <element signature="e#11465#11466#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ASTNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
+          <folding>
+            <element signature="e#3539#3540#0" expanded="true" />
+            <element signature="e#3589#3590#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="453">
-          <caret line="194" selection-start-line="194" selection-end-line="194" />
+        <state relative-caret-position="197">
+          <caret line="252" selection-start-line="252" selection-end-line="252" />
           <folding>
+            <element signature="imports" expanded="true" />
             <element signature="method#drawTask#0;class#Main#0" />
+            <element signature="method#taskConstruct#0;class#Main#0" />
+            <element signature="method#Interpreter#0;class#Main#0" />
             <element signature="method#isNumeric#0;class#Main#0" />
             <element signature="method#isNumericValue#0;class#Main#0" />
             <element signature="method#isLogic#0;class#Main#0" />
             <element signature="method#isCompareNumeric#0;class#Main#0" />
             <element signature="method#isCompare#0;class#Main#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ST2.ag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1035">
-          <caret line="44" column="4" selection-start-line="44" selection-start-column="4" selection-end-line="47" selection-end-column="62" />
         </state>
       </provider>
     </entry>

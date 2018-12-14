@@ -1,8 +1,10 @@
 import java.io.IOException;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
 
-import org.antlr.v4.gui.Trees;
+
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -19,14 +21,14 @@ public class Main {
     private static FileSinkGML out2 = new FileSinkGML();
     private static Scope ENV;
     private static Stack<ASTNode> LOOPS;
+    private static Signature SIG = new Signature();
     public static void main(String[] args) {
-
         try {
             out1.begin("AST.gml");
             ast.addSink(out1);
             ast.setStrict(false);
 
-            CharStream codePointCharStream = CharStreams.fromFileName("input2.txt");
+            CharStream codePointCharStream = CharStreams.fromFileName("input.txt");
             STLexer lexer = new STLexer(codePointCharStream);
             STParser parser = new STParser(new CommonTokenStream(lexer));
 
@@ -36,8 +38,16 @@ public class Main {
             ASTConstructListener astL = new ASTConstructListener ();
             walker.walk(astL, tree);
             ASTNode g = astL.getGoal();
-            //semanticAnalysis(g);
-            //semanticAnalysis(g);
+            semanticAnalysis(g);
+            semanticAnalysis(g);
+            semanticAnalysis(g);
+            semanticAnalysis(g);
+            semanticAnalysis(g);
+            semanticAnalysis(g);
+            semanticAnalysis(g);
+            System.out.println("sssssss");
+            semanticAnalysis(g);
+            System.out.println("sssssss");
             drawGraph(g);
             out1.end();
             /*
@@ -114,10 +124,10 @@ public class Main {
 
         if(g.getName().equals("Goal")){
             ast.addNode(String.valueOf(g.getId()));
-            ast.getNode(String.valueOf(g.getId())).addAttribute("label",g.getName()+" "+ g.getCOMPLETE());
+            ast.getNode(String.valueOf(g.getId())).addAttribute("label",g.getName()+" "+ g.getCOMPLETE()+" "+g.getOK());
         }else {
             ast.addNode(String.valueOf(g.getId()));
-            ast.getNode(String.valueOf(g.getId())).addAttribute("label", g.getName()+" "+g.getArgumentType()+" "+g.getOP_code() +" " + g.getCOMPLETE() + " " +g.getCoerce());
+            ast.getNode(String.valueOf(g.getId())).addAttribute("label", g.getName()+" "+g.getArgumentType()+" "+g.getOP_code() +" " + g.getCOMPLETE() +" "+g.getOK()+ " " +g.getCoerce());
         }
         for(ASTNode a : g.getChildren()){
             drawGraph(a);
@@ -132,12 +142,14 @@ public class Main {
             current.setLOOPS(new Stack<>());
             ENV = current.getSCOPE();
             LOOPS = current.getLOOPS();
+            for(ASTNode c : current.getChildren()){
+                semanticAnalysis(c);
+            }
 
-            semanticAnalysis(current.getChildren().get(0));
             //syn
-            current.setOK(current.isOk());
+            current.setOK(current.childOk());
             current.setCOMPLETE(current.getSCOPE() != null && current.getOK() != null && current.getLOOPS() !=null
-                    &&current.isComplete());
+                    &&current.childComplete());
             ENV.setComplete(true);
             ENV = ENV.getOuter();
 
@@ -147,23 +159,21 @@ public class Main {
                 semanticAnalysis(a);
             }
             //syn
-            current.setOK(current.isOk());
-            current.setCOMPLETE(current.getOK()!=null&&current.isComplete());
+            current.setOK(current.childOk());
+            current.setCOMPLETE(current.getOK()!=null && current.childComplete());
 
         }else if(current.getName().equals("Declaration")){
-            //inh
-
             //syn
-            current.setOK(ENV.isDefined(current.getOP_code()));
+            current.setOK(!ENV.isDefined(current.getOP_code()));
             current.setCOMPLETE(current.getOK()!=null);
-            /*ENV.setDefinition(current.getOP_code(),current);
-            if (Declaration.IN)
-                SIG.addFormalInParameter(Declaration.ID,Declaration);
-            if (Declaration.OUT)
-                SIG.addFormalOutParameter(Declaration.ID,Declaration);
-             */
+            ENV.setDefinition(current.getOP_code(),current);
+            if(current.In){
+                SIG.addFormalInParameter(current.getOP_code(),current);
+            }else if(current.Out){
+                SIG.addFormalOutParameter(current.getOP_code(),current);
+            }
         }else if(current.getName().equals("Program")){
-            //inh TODO
+            //inh
             current.setSCOPE(new Scope(ENV));
             ENV = current.getSCOPE();
 
@@ -171,33 +181,150 @@ public class Main {
                 semanticAnalysis(a);
             }
             //syn
-            current.setOK(current.isOk());
-            current.setCOMPLETE(current.getSCOPE()!=null && current.getOK()!=null&&current.isComplete());
+            current.setOK(current.childOk());
+            current.setCOMPLETE(current.getSCOPE()!=null && current.getOK()!=null&&current.childComplete());
             ENV.setComplete(true);
             ENV = ENV.getOuter();
         }else if(current.getName().equals("Function")){
             //inh
             current.setSCOPE(new Scope(ENV));
-            //current.setSIG();
+            current.setSIG(new Signature());
             ENV = current.getSCOPE();
-            //SIG = current.getSIG();
+            ENV.setDefinition(current.getOP_code(),current);
+            SIG = current.getSIG();
+            for (ASTNode a :current.getChildren()) {
+                semanticAnalysis(a);
+            }
+            //syn
+            current.setOK(current.childOk());
+            current.setCOMPLETE(current.getSCOPE()!=null&&current.getSIG()!=null&&current.getOK()!=null
+                    &&current.childComplete());
+            ENV.setComplete(true);
+            ENV = ENV.getOuter();
+
+        }else if(current.getName().equals("Stats")){
+            for(ASTNode a : current.getChildren()){
+                semanticAnalysis(a);
+            }
+            current.setOK(current.childOk());
+            current.setCOMPLETE(current.getOK()!=null&&current.childComplete());
+        }else if(current.getName().equals("IF")){
+            ASTNode exp = current.getChildren().get(0);
+            exp.setCoerce(false);
+            for(ASTNode c : current.getChildren()){
+                semanticAnalysis(c);
+            }
+            //syn
+            current.setOK(!ENV.isDefined(current.Label)&& exp.getKind().equals("Bool") &&current.childOk());
+            current.setCOMPLETE(current.getOK()!=null && current.childComplete());
+            if(current.Label != null &&!ENV.getComplete()){
+                ENV.setDefinition((current.Label),current);
+            }
+
+        }else if(current.getName().equals("While")){
+            ASTNode exp = current.getChildren().get(0);
+            exp.setCoerce(false);
+            LOOPS.push(current);
+            semanticAnalysis(current.getChildren().get(0));
+            semanticAnalysis(current.getChildren().get(1));
 
             //syn
-            current.setOK(current.isOk());
-            //current.setCOMPLETE(current.getSCOPE()!=null&&);
-        }else if(current.getName().equals("Stats")){
-            current.setOK(current.isOk());
-            current.setCOMPLETE(current.getOK()!=null&&current.isComplete());
-        }else if(current.getName().equals("IF")){
+            current.setOK(!ENV.isDefined(current.Label)&& exp.getKind().equals("Bool") &&current.childOk());
+            current.setCOMPLETE(current.getOK()!=null && current.childComplete());
+            LOOPS.pop();
+            if(current.Label != null &&!ENV.getComplete()){
+                ENV.setDefinition(current.Label,current);
+            }
+
+        }else if(current.getName().equals("Assign")){
+            ASTNode va = current.getChildren().get(0);
+            ASTNode exp = current.getChildren().get(1);
             //inh
-            current.getChildren().get(0).setCoerce(false);
+            if(va.getKind()!=null && exp.getKind()!=null){
+                exp.setCoerce(va.getKind().equals("Real")&&exp.getKind().equals("Int"));
+            }
+            semanticAnalysis(va);
+            semanticAnalysis(exp);
+
             //syn
+
+            current.setOK(((va.getKind().equals("Real")&&isNumericValue(exp.getKind()))
+                    || va.getKind().equals(exp.getKind())&&!va.getKind().equals("Error"))
+                    && !va.getRO()
+                    && !ENV.isDefined(current.Label)
+                    && current.childOk());
+
+
+            current.setCOMPLETE(current.getOK()!=null&&current.childComplete());
+            if(current.Label != null &&!ENV.getComplete()){
+                ENV.setDefinition(current.Label,current);
+            }
+
+        }else if(current.getName().equals("JMP")){
+            if(ENV.getComplete()){
+                current.setOK(!ENV.isDefined(current.Label) && ENV.isDefined(current.TARGET.Label));
+                current.TARGET = ENV.getDefinition(current.TARGET.Label);
+            }else {
+                current.setOK(false);
+            }
+            current.setCOMPLETE(current.getOK()!=null&&current.TARGET!=null);
+            if(current.Label!=null&&!ENV.getComplete()){
+                ENV.setDefinition(current.Label,current);
+            }
+
+
+        }else if(current.getName().equals("CONT")){
+            current.setOK(!ENV.isDefined(current.Label));
+            current.TARGET = LOOPS.peek();
+            current.setCOMPLETE(current.getOK()!=null&&current.TARGET!=null);
+            if(current.Label!=null&&!ENV.getComplete()){
+                ENV.setDefinition(current.Label,current);
+            }
+
+        }else if(current.getName().equals("EXIT")){
+            current.setOK(!ENV.isDefined(current.Label));
+            current.TARGET = LOOPS.peek();
+            current.setCOMPLETE(current.getOK()!=null&&current.TARGET!=null);
+            if(current.Label!=null&&!ENV.getComplete()){
+                ENV.setDefinition(current.Label,current);
+            }
+        }else if(current.getName().equals("FC")){
+            //inh
+            for(int i = 0; i<current.getChildren().size();i++){
+                ASTNode t = current.getChildren().get(i);
+                ASTNode p = current.TARGET.getSIG().getParameter(i);
+                t.setCoerce(p.In && t.getKind().equals("Int")&&p.getKind().equals("Real"));
+            }
+            for(ASTNode c : current.getChildren()){
+                semanticAnalysis(c);
+            }
+            //syn
+            if(ENV.getOuter().getComplete()){
+                current.TARGET = ENV.getOuter().getDefinition(current.TARGET.getOP_code());
+            }
+            current.setKind(current.TARGET.getKind());
+            current.setOK(isCompatible(current.getChildren(),current.TARGET.getSIG()) && current.childOk());
+            current.setCOMPLETE(current.getKind()!=null&&current.getCoerce()!=null&current.TARGET!=null&&current.getOK()
+                    &&current.childComplete());
 
         }else if(current.getName().equals("Constant")){
             current.setCOMPLETE(true);
             current.setOK(true);
             current.setKind(current.getArgumentType());
 
+        }else if(current.getName().equals("Variable")){
+            //syn
+            ASTNode temp = ENV.getDefinition(current.getOP_code());
+
+            System.out.println(current.getName()+" "+current.getKind()+" "+current.getOP_code()+" "+ENV.isDefined(current.getOP_code()));
+            System.out.println(temp.getName()+" "+temp.getKind()+" "+temp.getOP_code());
+            System.out.println();
+            current.setKind(temp.getKind());
+            current.setRO(temp.getRO());
+            current.setRW(temp.getRW());
+            current.setOK(ENV.isDefined(current.getOP_code())&&current.getKind()!=null&&current.getRO()!=null
+                    &&current.getRW()!=null);
+            current.setCOMPLETE(current.getOK());
         }else if(current.getArgumentType().equals("UE")){
             //inh
             current.getChildren().get(0).setCoerce(false);
@@ -212,6 +339,7 @@ public class Main {
                 current.setKind("Error");
             }
 
+            current.setOK(!current.getKind().equals("Error")&& current.childOk());
             current.setCOMPLETE(current.getKind() != null && current.getCoerce() != null && child.getCOMPLETE() != null);
 
         }else if(current.getArgumentType().equals("BE")){
@@ -220,7 +348,6 @@ public class Main {
                 current.getChildren().get(0).setCoerce(current.getChildren().get(0).getKind().equals("Int") && current.getKind().equals("Real"));
                 current.getChildren().get(1).setCoerce(current.getChildren().get(1).getKind().equals("Int") && current.getKind().equals("Real"));
             }
-
 
             semanticAnalysis(current.getChildren().get(0));
             semanticAnalysis(current.getChildren().get(1));
@@ -242,7 +369,7 @@ public class Main {
             }else{
                 current.setKind("Error");
             }
-
+            current.setOK(!current.getKind().equals("Error")&& current.childOk());
             current.setCOMPLETE(current.getKind()!=null && current.getCoerce()!=null);
         }
     }
@@ -512,8 +639,20 @@ public class Main {
 		&& i-th formal out-parameter KIND is same or coercible to i-th actual out-paramter
 		&& all actual out-parameter are variables and ! READ_ONLY
 	false, otherwise */
-    private static boolean isCompatible(){
-        return false;
+    private static boolean isCompatible(ArrayList<ASTNode> exp,Signature sig){
+        boolean b = false;
+        if(exp.size() == sig.getIn().size()){
+            for(int i = 0;i<exp.size();i++){
+                if(exp.get(i).getKind().equals(sig.getIn().get(i).getKind())
+                        || (isNumericValue(exp.get(i).getKind())) && isNumericValue(sig.getIn().get(i).getKind()))
+                {
+                    b=true;
+                }else {
+                    return false;
+                }
+            }
+        }
+        return b;
     }
     private static boolean isNumeric(String op){
         String [] a = {"+", "-", "*", "/", "MOD", "**"};
