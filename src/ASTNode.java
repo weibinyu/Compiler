@@ -9,7 +9,7 @@ public class ASTNode{
     private String OP_code;
     private ArrayList<ASTNode> children = new ArrayList<>();
     private String Kind;
-    private Boolean Coerce;
+    private Boolean Coerce = false;
     private Boolean COMPLETE = false;
     private Boolean OK = false;
     private Boolean RO = false;
@@ -25,6 +25,7 @@ public class ASTNode{
     public boolean In;
     public boolean Out;
     public String Label;
+    public boolean varRef;
 
 
     public ASTNode(String name,String at,String op,int id) {
@@ -40,6 +41,10 @@ public class ASTNode{
 
     public String getArgumentType() {
         return argumentType;
+    }
+
+    public void setArgumentType(String argumentType) {
+        this.argumentType = argumentType;
     }
 
     public String getOP_code() {
@@ -106,6 +111,14 @@ public class ASTNode{
 
     public TaskNode getNext() {
         return next;
+    }
+
+    public TaskNode getPred() {
+        return pred;
+    }
+
+    public void setPred(TaskNode pred) {
+        this.pred = pred;
     }
 
     public void setNext(TaskNode next) {

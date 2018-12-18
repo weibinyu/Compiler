@@ -10,6 +10,10 @@ public class TaskNode {
     private TaskNode pred;
     private TaskNode predLeft;
     private TaskNode predRight;
+    public String varName;
+    public Boolean isLoacl;
+    public ASTNode t;
+    public ASTNode f;
 
     public TaskNode(String task,int id){
         this.task = task;

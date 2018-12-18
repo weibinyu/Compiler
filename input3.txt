@@ -6,11 +6,15 @@ res : INT;
 END_VAR
 
 x := 3 + 4*5;
-y := 7;
+y := x;
 
 IF x > 1 
 THEN res := x MOD y;
 ELSE res := -1;
 END_IF
 
+WHILE  x > 1
+DO 
+  x := 0;
+END_WHILE
 END_PROGRAM

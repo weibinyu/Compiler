@@ -3,7 +3,7 @@ import java.util.Map;
 
 public class Scope {
     private Scope outer;
-    private Boolean complete;
+    private Boolean complete = false;
 
     public Map<String ,ASTNode> defs = new HashMap<>(); //first ID then Kind:
 
@@ -18,7 +18,10 @@ public class Scope {
         return	defs.containsKey(ID);
     }
     public void	setDefinition(String ID,ASTNode	TYPE_SPEC){
-        defs.put(ID,TYPE_SPEC);
+        if(!this.complete){
+            defs.put(ID,TYPE_SPEC);
+        }
+
     }
     public ASTNode getDefinition(String	ID){
         if	(isDefined(ID))
@@ -26,7 +29,7 @@ public class Scope {
         else	if	(outer	!=	null)
             return	outer.getDefinition(ID);
         else
-            return new ASTNode("Error",null,null,99999999);
+            return null;
     }
 
     public Scope getOuter() {

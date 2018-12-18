@@ -75,10 +75,10 @@ public class ASTConstructListener extends STBaseListener {
     @Override
     public void exitFunction_declaration(STParser.Function_declarationContext ctx) {
         id++;
-        ASTNode lo = new ASTNode("Function",ctx.type_specification().getText(),ctx.identifier().getText(),id);
         String f = ctx.type_specification().getText().substring(0,1).toUpperCase();
         String r = ctx.type_specification().getText().substring(1).toLowerCase();
-        lo.setKind(f+r);
+        ASTNode lo = new ASTNode("Function",f+r,ctx.identifier().getText(),id);
+        lo.setKind(lo.getArgumentType());
 
         ASTNode st = s.pop();
         if(ctx.function_variable_declaration_blocks()!=null){
@@ -108,19 +108,26 @@ public class ASTConstructListener extends STBaseListener {
 
     @Override
     public void exitFunction_variable_declaration_block(STParser.Function_variable_declaration_blockContext ctx) {
+        Stack<ASTNode> tmps = new Stack<>();
         for(STParser.Variable_declarationContext v : ctx.variable_declaration()){
-            ASTNode tmp = s.pop();
-            tmp.In = false;
-            tmp.Out = false;
-            if(ctx.variable_declaration_type().getText().equals("VAR_INPUT")){
-                tmp.In = true;
-            }else if(ctx.variable_declaration_type().getText().equals("VAR_OUTPUT")){
-                tmp.Out = true;
-            }else if(ctx.variable_declaration_type().getText().equals("VAR_IN_OUT")) {
-                tmp.In = true;
-                tmp.Out = true;
+            ASTNode tmp;
+            for(STParser.IdentifierContext i : v.identifier()){
+                tmp = s.pop();
+                tmp.In = false;
+                tmp.Out = false;
+                if(ctx.variable_declaration_type().getText().equals("VAR_INPUT")){
+                    tmp.In = true;
+                }else if(ctx.variable_declaration_type().getText().equals("VAR_OUTPUT")){
+                    tmp.Out = true;
+                }else if(ctx.variable_declaration_type().getText().equals("VAR_IN_OUT")) {
+                    tmp.In = true;
+                    tmp.Out = true;
+                }
+                tmps.push(tmp);
             }
-            s.push(tmp);
+            while (!tmps.empty()){
+                s.push(tmps.pop());
+            }
         }
     }
 
@@ -163,7 +170,7 @@ public class ASTConstructListener extends STBaseListener {
                 ASTNode left = s.pop();
 
                 id++;
-                ASTNode ue = new ASTNode(left.getName(),"UE",left.getOP_code(),id);
+                ASTNode ue = new ASTNode("UE",left.getName(),left.getOP_code(),id);
                 ue.addChild(right);
                 s.push(ue);
             }else if(ctx.getChildCount() == 3){
@@ -172,7 +179,7 @@ public class ASTConstructListener extends STBaseListener {
                 ASTNode left = s.pop();
 
                 id++;
-                ASTNode be = new ASTNode(b.getName(),"BE",b.getOP_code(),id);
+                ASTNode be = new ASTNode("BE",b.getName(),b.getOP_code(),id);
                 be.addChild(left);
                 be.addChild(right);
                 s.push(be);
@@ -184,7 +191,7 @@ public class ASTConstructListener extends STBaseListener {
     @Override
     public void exitFunction_call(STParser.Function_callContext ctx) {
         id++;
-        ASTNode v = new ASTNode(ctx.identifier().getText(),"FC",null,id);
+        ASTNode v = new ASTNode("FC",null,ctx.identifier().getText(),id);
         if(ctx.parameter_list()!=null){
             for(STParser.ExpressionContext e : ctx.parameter_list().expression()){
                 v.addChild(s.pop());
@@ -236,6 +243,13 @@ public class ASTConstructListener extends STBaseListener {
     }
 
     @Override
+    public void exitEmpty_statement(STParser.Empty_statementContext ctx) {
+        id++;
+        ASTNode v = new ASTNode("EMPTY",null,null,id);
+        s.push(v);
+    }
+
+    @Override
     public void exitIf_statement(STParser.If_statementContext ctx) {
         id++;
         ASTNode v = new ASTNode("IF",null,null,id);
@@ -254,6 +268,7 @@ public class ASTConstructListener extends STBaseListener {
         ASTNode be = new ASTNode("While",null,null,id);
         be.addChild(s.pop());   //expression and statmentList
         be.addChild(s.pop());
+        be.reverse();
         s.push(be);
     }
 
@@ -277,7 +292,11 @@ public class ASTConstructListener extends STBaseListener {
 
     @Override
     public void exitSimple_value(STParser.Simple_valueContext ctx) {
-        super.exitSimple_value(ctx);
+        if(ctx.variable()!=null){
+            ASTNode t = s.pop();
+            t.varRef = true;
+            s.push(t);
+        }
     }
 
     @Override

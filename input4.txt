@@ -1,24 +1,39 @@
+VAR_GLOBAL
+ c,d :REAL;
+ e,f :INT;
+END_VAR
 PROGRAM function3
 VAR_ACCESS
  outInt : INT READ_WRITE;
 END_VAR
 VAR
  a,b : INT;
-END_VAR
+ END_VAR
 
  a := 1;	
- b := 2;	
+ b := 2;
+ c := 1 + 2;	
  outInt := plus(inc(b),a);
 END_PROGRAM
+
 FUNCTION plus : INT
  VAR_INPUT
  x,y : INT;
  END_VAR
  plus := x+y;
+IF x > 1 
+THEN plus := x MOD y;
+ELSE x := -1;
+END_IF
 END_FUNCTION
+
 FUNCTION inc : INT
  VAR_INPUT
  i : INT;
  END_VAR
  inc := i + 1;
-END_FUNCTION
+WHILE  inc > 1
+DO 
+  inc := 0;
+END_WHILE
+END_FUNCTION 

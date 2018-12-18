@@ -1,131 +1,135 @@
 graph [
 	node [
 		id "1"
-		label "Goal false false"
+		label "Goal true true"
 	]
 	node [
-		id "6"
-		label "Global null null true true null"
+		id "19"
+		label "Program null function3 true true false"
 	]
 	node [
 		id "5"
-		label "Declaration INT f true true null"
-	]
-	edge [
-		id "6 to 5"
-		source "6"
-		target "5"
+		label "Local null null true true false"
 	]
 	node [
 		id "4"
-		label "Declaration INT e true true null"
+		label "Declaration INT b true true false"
 	]
 	edge [
-		id "6 to 4"
-		source "6"
+		id "5 to 4"
+		source "5"
 		target "4"
 	]
 	node [
 		id "3"
-		label "Declaration INT d true true null"
+		label "Declaration INT a true true false"
 	]
 	edge [
-		id "6 to 3"
-		source "6"
+		id "5 to 3"
+		source "5"
 		target "3"
 	]
 	node [
 		id "2"
-		label "Declaration INT c true true null"
+		label "Declaration READ_WRITE outInt true true false"
 	]
 	edge [
-		id "6 to 2"
-		source "6"
+		id "5 to 2"
+		source "5"
 		target "2"
 	]
 	edge [
-		id "1 to 6"
-		source "1"
-		target "6"
+		id "19 to 5"
+		source "19"
+		target "5"
 	]
 	node [
-		id "24"
-		label "Program null function3 false false null"
-	]
-	node [
-		id "10"
-		label "Local null null true true null"
-	]
-	node [
-		id "9"
-		label "Declaration INT b true true null"
-	]
-	edge [
-		id "10 to 9"
-		source "10"
-		target "9"
+		id "18"
+		label "Stats null null true true false"
 	]
 	node [
 		id "8"
-		label "Declaration INT a true true null"
+		label "Assign null := true true false"
+	]
+	node [
+		id "6"
+		label "Variable Int a true true false"
 	]
 	edge [
-		id "10 to 8"
-		source "10"
-		target "8"
+		id "8 to 6"
+		source "8"
+		target "6"
 	]
 	node [
 		id "7"
-		label "Declaration READ_WRITE outInt true true null"
-	]
-	edge [
-		id "10 to 7"
-		source "10"
-		target "7"
-	]
-	edge [
-		id "24 to 10"
-		source "24"
-		target "10"
-	]
-	node [
-		id "23"
-		label "Stats null null false false null"
-	]
-	node [
-		id "13"
-		label "Assign null := true true null"
-	]
-	node [
-		id "11"
-		label "Variable null a true true null"
-	]
-	edge [
-		id "13 to 11"
-		source "13"
-		target "11"
-	]
-	node [
-		id "12"
 		label "Constant Int 1 true true false"
 	]
 	edge [
-		id "13 to 12"
-		source "13"
-		target "12"
+		id "8 to 7"
+		source "8"
+		target "7"
 	]
 	edge [
-		id "23 to 13"
-		source "23"
-		target "13"
+		id "18 to 8"
+		source "18"
+		target "8"
+	]
+	node [
+		id "11"
+		label "Assign null := true true false"
+	]
+	node [
+		id "9"
+		label "Variable Int b true true false"
+	]
+	edge [
+		id "11 to 9"
+		source "11"
+		target "9"
+	]
+	node [
+		id "10"
+		label "Constant Int 2 true true false"
+	]
+	edge [
+		id "11 to 10"
+		source "11"
+		target "10"
+	]
+	edge [
+		id "18 to 11"
+		source "18"
+		target "11"
+	]
+	node [
+		id "17"
+		label "Assign null := true true false"
+	]
+	node [
+		id "12"
+		label "Variable Int outInt true true false"
+	]
+	edge [
+		id "17 to 12"
+		source "17"
+		target "12"
 	]
 	node [
 		id "16"
-		label "Assign null := true true null"
+		label "FC Int plus true true false"
 	]
 	node [
 		id "14"
-		label "Variable null b true true null"
+		label "FC Int inc true true false"
+	]
+	node [
+		id "13"
+		label "Variable Int b true true false"
+	]
+	edge [
+		id "14 to 13"
+		source "14"
+		target "13"
 	]
 	edge [
 		id "16 to 14"
@@ -134,7 +138,7 @@ graph [
 	]
 	node [
 		id "15"
-		label "Constant Int 2 true true false"
+		label "Variable Int a true true false"
 	]
 	edge [
 		id "16 to 15"
@@ -142,34 +146,14 @@ graph [
 		target "15"
 	]
 	edge [
-		id "23 to 16"
-		source "23"
+		id "17 to 16"
+		source "17"
 		target "16"
 	]
-	node [
-		id "22"
-		label "Assign null := false false null"
-	]
-	node [
-		id "17"
-		label "Variable null outInt true true null"
-	]
 	edge [
-		id "22 to 17"
-		source "22"
+		id "18 to 17"
+		source "18"
 		target "17"
-	]
-	node [
-		id "21"
-		label "plus FC null false false null"
-	]
-	node [
-		id "19"
-		label "inc FC null false false null"
-	]
-	node [
-		id "18"
-		label "Variable null b false false null"
 	]
 	edge [
 		id "19 to 18"
@@ -177,103 +161,111 @@ graph [
 		target "18"
 	]
 	edge [
-		id "21 to 19"
-		source "21"
+		id "1 to 19"
+		source "1"
 		target "19"
 	]
 	node [
-		id "20"
-		label "Variable null a false false null"
+		id "30"
+		label "Function Int plus true true false"
 	]
-	edge [
-		id "21 to 20"
-		source "21"
-		target "20"
+	node [
+		id "22"
+		label "Local null null true true false"
+	]
+	node [
+		id "21"
+		label "Declaration INT y true true false"
 	]
 	edge [
 		id "22 to 21"
 		source "22"
 		target "21"
 	]
+	node [
+		id "20"
+		label "Declaration INT x true true false"
+	]
 	edge [
-		id "23 to 22"
-		source "23"
+		id "22 to 20"
+		source "22"
+		target "20"
+	]
+	edge [
+		id "30 to 22"
+		source "30"
 		target "22"
 	]
-	edge [
-		id "24 to 23"
-		source "24"
-		target "23"
-	]
-	edge [
-		id "1 to 24"
-		source "1"
-		target "24"
+	node [
+		id "29"
+		label "Stats null null true true false"
 	]
 	node [
-		id "35"
-		label "Function INT plus true true null"
+		id "28"
+		label "Assign null := true true false"
+	]
+	node [
+		id "23"
+		label "Variable Int plus true true false"
+	]
+	edge [
+		id "28 to 23"
+		source "28"
+		target "23"
 	]
 	node [
 		id "27"
-		label "Local null null true true null"
+		label "BE Add + true true false"
+	]
+	node [
+		id "24"
+		label "Variable Int x true true false"
+	]
+	edge [
+		id "27 to 24"
+		source "27"
+		target "24"
 	]
 	node [
 		id "26"
-		label "Declaration INT y true true null"
+		label "Variable Int y true true false"
 	]
 	edge [
 		id "27 to 26"
 		source "27"
 		target "26"
 	]
-	node [
-		id "25"
-		label "Declaration INT x true true null"
-	]
 	edge [
-		id "27 to 25"
-		source "27"
-		target "25"
-	]
-	edge [
-		id "35 to 27"
-		source "35"
+		id "28 to 27"
+		source "28"
 		target "27"
 	]
-	node [
-		id "34"
-		label "Stats null null true true null"
-	]
-	node [
-		id "33"
-		label "Assign null := true true null"
-	]
-	node [
-		id "28"
-		label "Variable null plus true true null"
+	edge [
+		id "29 to 28"
+		source "29"
+		target "28"
 	]
 	edge [
-		id "33 to 28"
-		source "33"
-		target "28"
+		id "30 to 29"
+		source "30"
+		target "29"
+	]
+	edge [
+		id "1 to 30"
+		source "1"
+		target "30"
+	]
+	node [
+		id "40"
+		label "Function Int inc true true false"
 	]
 	node [
 		id "32"
-		label "Add BE + true true false"
-	]
-	node [
-		id "29"
-		label "Variable null x true true false"
-	]
-	edge [
-		id "32 to 29"
-		source "32"
-		target "29"
+		label "Local null null true true false"
 	]
 	node [
 		id "31"
-		label "Variable null y true true false"
+		label "Declaration INT i true true false"
 	]
 	edge [
 		id "32 to 31"
@@ -281,36 +273,43 @@ graph [
 		target "31"
 	]
 	edge [
-		id "33 to 32"
-		source "33"
+		id "40 to 32"
+		source "40"
 		target "32"
 	]
-	edge [
-		id "34 to 33"
-		source "34"
-		target "33"
-	]
-	edge [
-		id "35 to 34"
-		source "35"
-		target "34"
-	]
-	edge [
-		id "1 to 35"
-		source "1"
-		target "35"
+	node [
+		id "39"
+		label "Stats null null true true false"
 	]
 	node [
-		id "45"
-		label "Function INT inc true true null"
+		id "38"
+		label "Assign null := true true false"
+	]
+	node [
+		id "33"
+		label "Variable Int inc true true false"
+	]
+	edge [
+		id "38 to 33"
+		source "38"
+		target "33"
 	]
 	node [
 		id "37"
-		label "Local null null true true null"
+		label "BE Add + true true false"
+	]
+	node [
+		id "34"
+		label "Variable Int i true true false"
+	]
+	edge [
+		id "37 to 34"
+		source "37"
+		target "34"
 	]
 	node [
 		id "36"
-		label "Declaration INT i true true null"
+		label "Constant Int 1 true true false"
 	]
 	edge [
 		id "37 to 36"
@@ -318,67 +317,23 @@ graph [
 		target "36"
 	]
 	edge [
-		id "45 to 37"
-		source "45"
+		id "38 to 37"
+		source "38"
 		target "37"
 	]
-	node [
-		id "44"
-		label "Stats null null true true null"
-	]
-	node [
-		id "43"
-		label "Assign null := true true null"
-	]
-	node [
-		id "38"
-		label "Variable null inc true true null"
-	]
 	edge [
-		id "43 to 38"
-		source "43"
+		id "39 to 38"
+		source "39"
 		target "38"
 	]
-	node [
-		id "42"
-		label "Add BE + true true false"
-	]
-	node [
-		id "39"
-		label "Variable null i true true false"
-	]
 	edge [
-		id "42 to 39"
-		source "42"
+		id "40 to 39"
+		source "40"
 		target "39"
 	]
-	node [
-		id "41"
-		label "Constant Int 1 true true false"
-	]
 	edge [
-		id "42 to 41"
-		source "42"
-		target "41"
-	]
-	edge [
-		id "43 to 42"
-		source "43"
-		target "42"
-	]
-	edge [
-		id "44 to 43"
-		source "44"
-		target "43"
-	]
-	edge [
-		id "45 to 44"
-		source "45"
-		target "44"
-	]
-	edge [
-		id "1 to 45"
+		id "1 to 40"
 		source "1"
-		target "45"
+		target "40"
 	]
 ]
