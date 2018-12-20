@@ -17,8 +17,8 @@ FUNCTION gcd : INT
  IF a == b THEN
  gcd := a;
  ELSE
- IF a < b THEN
- gcd := gcd(b,a);
+   IF a < b THEN
+   gcd := gcd(b,a);
  ELSE
  gcd := gcd(b, a-b);
  END_IF

@@ -114,11 +114,12 @@ public class Main {
             for(int i = 0;i<current.getChildren().size()-1;i++){
                 current.getChildren().get(i).setNext(current.getChildren().get(i+1).getFirst());
             }
+            current.getChildren().get(current.getChildren().size()-1).setNext(current.getNext());
+
             for(int i = 0;i<current.getChildren().size();i++){
                 taskConstruct(current.getChildren().get(i));
             }
             current.setFirst(current.getChildren().get(0).getFirst());
-            current.getChildren().get(current.getChildren().size()-1).setNext(current.getNext());
             current.setLast(current.getChildren().get(current.getChildren().size()-1).getLast());
 
         }else if(current.getName().equals("Assign")){
@@ -126,7 +127,6 @@ public class Main {
             ASTNode exp = current.getChildren().get(1);
 
             taskConstruct(exp);
-            //TODO print
             System.out.println(va.getName()+" "+va.getOP_code()+" "+va.getRW());
             if(exp.getNext()==null){
                 if(va.getRW()){
@@ -170,27 +170,32 @@ public class Main {
         }else if(current.getName().equals("Variable")){
             if(current.varRef){
                 if(current.getLast() == null) {
-                    TaskNode t = new TaskNode("Load", id);
-                    id++;
-                    t.setKind(current.getKind());
-                    t.varName = current.getOP_code();
-                    t.setCoerce(current.getCoerce());
-                    t.setNext(current.getNext());
-                    t.setOpCode(current.getOP_code());
-                    t.setPred(current.getPred());
-                    t.setSort(t.getKind());
-                    current.setLast(t);
+                    if(current.getRO()){
+                        TaskNode t = new TaskNode("Read", id);
+                        id++;
+                        t.setKind(current.getKind());
+                        t.setCoerce(current.getCoerce());
+                        t.setNext(current.getNext());
+                        t.setPred(current.getPred());
+                        t.setSort(t.getKind());
+                        current.setLast(t);
+
+                        addTaskG(t);
+                    }else{
+                        TaskNode t = new TaskNode("Load", id);
+                        id++;
+                        t.setKind(current.getKind());
+                        t.varName = current.getOP_code();
+                        t.setCoerce(current.getCoerce());
+                        t.setNext(current.getNext());
+                        t.setOpCode(current.getOP_code());
+                        t.setPred(current.getPred());
+                        t.setSort(t.getKind());
+                        current.setLast(t);
+                        addTaskG(t);
+                    }
                     current.setFirst(current.getLast());
-                    addTaskG(t);
                 }
-                TaskNode t = current.getLast();
-                t.setKind(current.getKind());
-                t.varName = current.getOP_code();
-                t.setCoerce(current.getCoerce());
-                t.setOpCode(current.getOP_code());
-                t.setNext(current.getNext());
-                t.setPred(current.getPred());
-                t.setSort(t.getKind());
             }
         }else if (current.getName().equals("Constant")){
             if(current.getLast() == null) {
@@ -206,11 +211,6 @@ public class Main {
                 addTaskG(t);
             }
             TaskNode t = current.getLast();
-            t.setKind(current.getKind());
-            t.setValue(current.getOP_code());
-            t.setCoerce(current.getCoerce());
-            t.setNext(current.getNext());
-            t.setSort(t.getKind());
             if(t.getCoerce()){
                 t.setKind("Real");
             }
@@ -218,8 +218,8 @@ public class Main {
 
         }else if(current.getName().equals("IF")){
             ASTNode exp = current.getChildren().get(0);
-            for (int i=0;i<current.getChildren().size();i++){
-                if(i>0){
+            for (int i=0;i<current.getChildren().size();i++) {
+                if (i > 0) {
                     current.getChildren().get(i).setNext(current.getNext());
                 }
                 taskConstruct(current.getChildren().get(i));
@@ -235,13 +235,6 @@ public class Main {
                     t.f = current.getChildren().get(2);
                 }
                 addTaskG(t);
-            }
-            TaskNode t = exp.getNext();
-            t.setPred(exp.getLast());
-            exp.setNext(t);
-            t.t = current.getChildren().get(1);
-            if(current.getChildren().size()>2){
-                t.f = current.getChildren().get(2);
             }
             current.setFirst(exp.getFirst());
 
@@ -260,11 +253,6 @@ public class Main {
                 t.f = current;
                 addTaskG(t);
             }
-            TaskNode t = exp.getNext();
-            t.setPred(exp.getLast());
-            exp.setNext(t);
-            t.t = current.getChildren().get(1);
-            t.f = current;
             current.setFirst(exp.getFirst());
             st.setNext(exp.getFirst());
         }else if(current.getName().equals("FC")){
@@ -363,6 +351,7 @@ public class Main {
 
     public static void drawTask(ASTNode start){
         ASTNode current = start;
+        System.out.println(current.getName()+" "+current.getOP_code());
         if (current.getName().equals("Goal")){
             for (ASTNode a: current.getChildren()) {
                 drawTask(a);
@@ -379,6 +368,7 @@ public class Main {
         }else if(current.getName().equals("Function")){
             drawTask(current.getChildren().get(1));
         }else if(current.getName().equals("Stats")){
+            System.out.println("Stats has "+ current.getNext());
             addTaskG(current.getFirst());
             for (ASTNode a:current.getChildren()) {
                 drawTask(a);
@@ -388,12 +378,13 @@ public class Main {
             TaskNode st = exp.getNext();
 
             drawTask(exp);
-            System.out.println(st.getTask()+" "+st.getOpCode());
+            System.out.println(current.getName()+" "+ current.getOP_code()+" next is "+current.getNext());
             task.addEdge(exp.getLast().getId()+" CE " + st.getId(),String.valueOf(exp.getLast().getId()),String.valueOf(st.getId()));
             task.addEdge(st.getId()+" DE " + exp.getLast().getId(),String.valueOf(st.getId()),String.valueOf(exp.getLast().getId()));
             task.addEdge(st.getId()+" CE " + current.getNext().getId(),String.valueOf(st.getId()),String.valueOf(current.getNext().getId()));
 
         }else if(current.getName().equals("IF")){
+            System.out.println("IF has "+ current.getNext());
             ASTNode exp = current.getChildren().get(0);
             TaskNode taskNode = exp.getNext();
             ASTNode t = taskNode.t;
