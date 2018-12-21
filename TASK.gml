@@ -41,7 +41,7 @@ graph [
 	]
 	node [
 		id "10"
-		label "Store i null"
+		label "Store null null"
 	]
 	node [
 		id "11"
@@ -49,11 +49,11 @@ graph [
 	]
 	node [
 		id "12"
-		label "Store x null"
+		label "Store null null"
 	]
 	node [
 		id "13"
-		label "Store y null"
+		label "Store null null"
 	]
 	node [
 		id "14"

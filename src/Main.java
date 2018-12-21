@@ -1,8 +1,6 @@
 import java.io.IOException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Stack;
+import java.util.*;
 
 
 import org.antlr.v4.runtime.*;
@@ -20,7 +18,10 @@ public class Main {
     private static Graph task = new MultiGraph("task");
     private static FileSinkGML out2 = new FileSinkGML();
     private static AGConstruct aC = new AGConstruct();
-    private static TaskConstruct tC = new TaskConstruct();
+    private static ArrayList<Map>staskList = new ArrayList<>();
+    private static int SF=0;
+    private static int TF=0;
+
 
     public static void main(String[] args) {
         try {
@@ -50,19 +51,17 @@ public class Main {
             task.addSink(out2);
             task.setStrict(false);
 
-            //for(int i = 2;i<g.getChildren().size();i++){
-                taskConstruct(g);
-                taskConstruct(g);
-            //}
-            //for(int i = 2;i<g.getChildren().size();i++){
-                drawTask(g);
-            //}
 
+            taskConstruct(g);
+            taskConstruct(g);
+            drawTask(g);
             out2.end();
-             /*
+            //init
+            Map<String,Object> stack = new HashMap<>();
+            staskList.add(stack);
             Interpreter(g.getFirst());
 
-            */
+
             //Trees.inspect(tree, parser);
         }catch (IOException e) {
             System.err.println("Input file not found.");
@@ -91,7 +90,11 @@ public class Main {
         if (current.getName().equals("Goal")){
             for(ASTNode a : current.getChildren()){
                 taskConstruct(a);
+                if(a.getName().equals("Program")){
+                    current.setFirst(a.getFirst());
+                }
             }
+
         }else if(current.getName().equals("Program")){
             if(current.getNext()==null){
                 TaskNode t = new TaskNode("Terminate",id);
@@ -99,8 +102,9 @@ public class Main {
                 current.setNext(t);
                 addTaskG(t);
             }
-            current.getChildren().get(1).setNext(current.getNext());
-            taskConstruct(current.getChildren().get(1));
+            current.getChildren().get(current.getChildren().size()-1).setNext(current.getNext());
+            taskConstruct(current.getChildren().get(current.getChildren().size()-1));
+            current.setFirst(current.getChildren().get(current.getChildren().size()-1).getFirst());
         }else if(current.getName().equals("Function")){
             if(current.getNext()==null){
                 TaskNode t = new TaskNode("Return",id);
@@ -108,8 +112,9 @@ public class Main {
                 current.setNext(t);
                 addTaskG(t);
             }
-            current.getChildren().get(1).setNext(current.getNext());
-            taskConstruct(current.getChildren().get(1));
+            current.getChildren().get(current.getChildren().size()-1).setNext(current.getNext());
+            taskConstruct(current.getChildren().get(current.getChildren().size()-1));
+            current.setFirst(current.getChildren().get(current.getChildren().size()-1).getFirst());
         }else if(current.getName().equals("Stats")){
             for(int i = 0;i<current.getChildren().size()-1;i++){
                 current.getChildren().get(i).setNext(current.getChildren().get(i+1).getFirst());
@@ -127,7 +132,6 @@ public class Main {
             ASTNode exp = current.getChildren().get(1);
 
             taskConstruct(exp);
-            System.out.println(va.getName()+" "+va.getOP_code()+" "+va.getRW());
             if(exp.getNext()==null){
                 if(va.getRW()){
                     TaskNode t = new TaskNode("Print", id);
@@ -194,6 +198,13 @@ public class Main {
                         current.setLast(t);
                         addTaskG(t);
                     }
+                    TaskNode t = current.getLast();
+                    t.setKind(current.getKind());
+                    t.setCoerce(current.getCoerce());
+                    t.setOpCode(current.getOP_code());
+                    t.setNext(current.getNext());
+                    t.setPred(current.getPred());
+                    t.setSort(t.getKind());
                     current.setFirst(current.getLast());
                 }
             }
@@ -211,6 +222,11 @@ public class Main {
                 addTaskG(t);
             }
             TaskNode t = current.getLast();
+            t.setKind(current.getKind());
+            t.setValue(current.getOP_code());
+            t.setCoerce(current.getCoerce());
+            t.setNext(current.getNext());
+            t.setSort(t.getKind());
             if(t.getCoerce()){
                 t.setKind("Real");
             }
@@ -272,17 +288,22 @@ public class Main {
                 for(int i = 0;i<current.getChildren().size();i++){
                     TaskNode s = new TaskNode("Store",id);
                     id++;
-                    s.setOpCode(current.TARGET.getSIG().getIn().get(i).getOP_code());
+                    s.varName = current.TARGET.getSIG().getIn().get(i).getOP_code();
                     if(i+1<current.getChildren().size()){
                         s.setNext(current.getChildren().get(i+1).getFirst());
+                        s.setPred(current.getChildren().get(i).getFirst());
                     }
                     current.getChildren().get(i).getLast().setNext(s);
                     addTaskG(s);
                 }
-                current.getChildren().get(current.getChildren().size()-1).getLast().getNext().setNext(c);
+                TaskNode lastExpression = current.getChildren().get(current.getChildren().size()-1).getLast();
+                lastExpression.getNext().setNext(c);
+                lastExpression.getNext().setPred(current.getChildren().get(current.getChildren().size()-1).getLast());
                 current.setFirst(p);
                 current.setLast(c);
             }
+            TaskNode c = current.getLast();
+            current.getChildren().get(current.getChildren().size()-1).getLast().getNext().setNext(c);
 
         }else if(current.getName().equals("UE")){
             //inh
@@ -351,7 +372,6 @@ public class Main {
 
     public static void drawTask(ASTNode start){
         ASTNode current = start;
-        System.out.println(current.getName()+" "+current.getOP_code());
         if (current.getName().equals("Goal")){
             for (ASTNode a: current.getChildren()) {
                 drawTask(a);
@@ -360,7 +380,7 @@ public class Main {
         }else if(current.getName().equals("Program")){
             task.addNode("Start");
             task.getNode("Start").addAttribute("label","Start");
-            TaskNode first = current.getChildren().get(1).getFirst();
+            TaskNode first = current.getChildren().get(current.getChildren().size()-1).getFirst();
 
             task.addEdge("Start CE "+first.getTask(),"Start",String.valueOf(first.getId()));
 
@@ -368,7 +388,6 @@ public class Main {
         }else if(current.getName().equals("Function")){
             drawTask(current.getChildren().get(1));
         }else if(current.getName().equals("Stats")){
-            System.out.println("Stats has "+ current.getNext());
             addTaskG(current.getFirst());
             for (ASTNode a:current.getChildren()) {
                 drawTask(a);
@@ -378,13 +397,11 @@ public class Main {
             TaskNode st = exp.getNext();
 
             drawTask(exp);
-            System.out.println(current.getName()+" "+ current.getOP_code()+" next is "+current.getNext());
             task.addEdge(exp.getLast().getId()+" CE " + st.getId(),String.valueOf(exp.getLast().getId()),String.valueOf(st.getId()));
             task.addEdge(st.getId()+" DE " + exp.getLast().getId(),String.valueOf(st.getId()),String.valueOf(exp.getLast().getId()));
             task.addEdge(st.getId()+" CE " + current.getNext().getId(),String.valueOf(st.getId()),String.valueOf(current.getNext().getId()));
 
         }else if(current.getName().equals("IF")){
-            System.out.println("IF has "+ current.getNext());
             ASTNode exp = current.getChildren().get(0);
             TaskNode taskNode = exp.getNext();
             ASTNode t = taskNode.t;
@@ -452,10 +469,25 @@ public class Main {
             drawTask(current.getChildren().get(1));
         }
     }
+
     private static void Interpreter(TaskNode t) {
         TaskNode CT = t;
         while (CT != null) {
-            if (CT.getTask().equals("UE")) {
+            if(CT.getTask().equals("Store")){
+                staskList.get(TF).put(CT.varName,CT.getPred().getValue());
+            }else if(CT.getTask().equals("Load")){
+                CT.setValue(String.valueOf(staskList.get(SF).get(CT.varName)));
+            }else if(CT.getTask().equals("Push")){
+                TF++;
+                if(TF > staskList.size()-1){
+                    Map<String,Object> e = new HashMap<>();
+                    staskList.add(e);
+                }
+            }else if(CT.getTask().equals("Call")){
+
+            }else if(CT.getTask().equals("Return")){
+
+            }else if (CT.getTask().equals("UE")) {
                 if (CT.getOpCode().equals("-")) {
                     if(CT.getPred().getKind().equals("Int")){
                         int i = 0 - Integer.valueOf(CT.getPred().getValue());
@@ -594,13 +626,9 @@ public class Main {
                 }
             }
             if(CT.getNext() != null){
-                if(CT.getTask().equals("Const")){
-                    System.out.println("Task value of "+CT.getTask()+" is "+CT.getValue()+" and next is " +CT.getNext().getTask());
-                }else {
-                    System.out.println("Task value of "+CT.getTask()+" is "+CT.getValue()+ " op is "+ CT.getOpCode()+" and next is " +CT.getNext().getTask());
-                }
-
+                System.out.println("Task "+CT.getTask()+" value "+CT.getValue()+ " op "+ CT.getOpCode()+" next " +CT.getNext().getTask()+" varName "+CT.varName);
             }
+            System.out.println("TF is " +TF +" SF is " + SF);
             CT = CT.getNext();
 
         }
