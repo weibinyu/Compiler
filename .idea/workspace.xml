@@ -3,11 +3,20 @@
   <component name="ChangeListManager">
     <list default="true" id="49f0e0e7-27e6-4128-b654-421b1736be2b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AST.gml" beforeDir="false" afterPath="$PROJECT_DIR$/AST.gml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TASK.gml" beforeDir="false" afterPath="$PROJECT_DIR$/TASK.gml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input4.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/AGConstruct.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/AGConstruct.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/ASTNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/ASTNode.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Compiler/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/TaskConstruct.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Signature.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Signature.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/TaskNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/TaskNode.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AGConstruct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AGConstruct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ASTNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TaskConstruct.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Signature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Signature.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TaskNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TaskNode.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,12 +30,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="241">
-              <caret line="630" column="59" selection-start-line="630" selection-start-column="59" selection-end-line="630" selection-end-column="59" />
+            <state relative-caret-position="13091">
+              <caret line="703" column="30" selection-start-line="703" selection-start-column="23" selection-end-line="703" selection-end-column="30" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#drawGraph#0;class#Main#0" />
                 <element signature="method#addTaskG#0;class#Main#0" />
+                <element signature="method#upDateTarget#0;class#Main#0" />
               </folding>
             </state>
           </provider>
@@ -35,8 +45,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AGConstruct.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3781">
-              <caret line="201" column="57" selection-start-line="201" selection-start-column="57" selection-end-line="201" selection-end-column="57" />
+            <state relative-caret-position="386">
+              <caret line="202" column="62" selection-start-line="202" selection-start-column="62" selection-end-line="202" selection-end-column="62" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -47,8 +57,15 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/TaskNode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+            <state relative-caret-position="187">
+              <caret line="29" selection-start-line="29" selection-end-line="29" />
+              <folding>
+                <element signature="e#644#645#0" expanded="true" />
+                <element signature="e#908#909#0" expanded="true" />
+                <element signature="e#940#941#0" expanded="true" />
+                <element signature="e#1048#1049#0" expanded="true" />
+                <element signature="e#1084#1085#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -56,14 +73,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Signature.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="76">
-              <caret line="7" column="52" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="54" />
+            <state relative-caret-position="382">
+              <caret line="36" column="28" selection-start-line="36" selection-start-column="28" selection-end-line="36" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#744#745#0" expanded="true" />
                 <element signature="e#769#770#0" expanded="true" />
-                <element signature="e#862#863#0" expanded="true" />
-                <element signature="e#906#907#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -72,7 +87,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Scope.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
+            <state relative-caret-position="325">
               <caret line="20" column="12" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -92,13 +107,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ASTNode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2242">
-              <caret line="186" column="4" selection-start-line="186" selection-start-column="4" selection-end-line="188" selection-end-column="5" />
+            <state relative-caret-position="168">
+              <caret line="116" selection-start-line="116" selection-end-line="116" />
               <folding>
-                <element signature="e#2385#2386#0" expanded="true" />
-                <element signature="e#2412#2413#0" expanded="true" />
-                <element signature="e#2454#2455#0" expanded="true" />
-                <element signature="e#2486#2487#0" expanded="true" />
+                <element signature="e#993#994#0" expanded="true" />
+                <element signature="e#1020#1021#0" expanded="true" />
+                <element signature="e#1232#1233#0" expanded="true" />
+                <element signature="e#1262#1263#0" expanded="true" />
+                <element signature="e#1308#1309#0" expanded="true" />
+                <element signature="e#1346#1347#0" expanded="true" />
+                <element signature="e#1661#1662#0" expanded="true" />
+                <element signature="e#1688#1689#0" expanded="true" />
+                <element signature="e#1798#1799#0" expanded="true" />
+                <element signature="e#1827#1828#0" expanded="true" />
+                <element signature="e#2275#2276#0" expanded="true" />
+                <element signature="e#2302#2303#0" expanded="true" />
+                <element signature="e#2436#2437#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -107,7 +131,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ST.g4">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4332">
+            <state relative-caret-position="2124">
               <caret line="228" column="8" selection-start-line="228" selection-start-column="8" selection-end-line="228" selection-end-column="8" />
             </state>
           </provider>
@@ -132,14 +156,17 @@
       <find>Sig</find>
       <find>Var</find>
       <find>SIG</find>
-      <find>target</find>
       <find>SIG.</find>
       <find>Dec</find>
       <find>Defin</find>
       <find>BE</find>
       <find>LOcal_variable</find>
       <find>simpl</find>
+      <find>Target</find>
+      <find>target</find>
+      <find>has</find>
       <find>sys</find>
+      <find>println</find>
     </findStrings>
     <dirStrings>
       <dir>C:\Users\weibin\IdeaProjects\Compiler</dir>
@@ -164,12 +191,12 @@
         <option value="$PROJECT_DIR$/ST2.ag" />
         <option value="$PROJECT_DIR$/src/Scope.java" />
         <option value="$PROJECT_DIR$/src/ASTConstructListener.java" />
-        <option value="$PROJECT_DIR$/src/ASTNode.java" />
         <option value="$PROJECT_DIR$/TASK.gml" />
         <option value="$PROJECT_DIR$/src/TaskConstruct.java" />
         <option value="$PROJECT_DIR$/src/TaskNode.java" />
-        <option value="$PROJECT_DIR$/src/Signature.java" />
+        <option value="$PROJECT_DIR$/src/ASTNode.java" />
         <option value="$PROJECT_DIR$/src/AGConstruct.java" />
+        <option value="$PROJECT_DIR$/src/Signature.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
       </list>
     </option>
@@ -181,7 +208,7 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="953" />
+    <option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
   </component>
@@ -192,6 +219,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -213,7 +241,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -221,7 +248,7 @@
     <property name="$PROJECT_DIR$/src/ST.g4::/gen-listener" value="true" />
     <property name="$PROJECT_DIR$/src/ST.g4::/gen-visitor" value="true" />
     <property name="OverrideImplement.combined" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1545422024250" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1545503372847" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../rr222ge_Assign1" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
@@ -292,10 +319,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22761194" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23560767" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -304,7 +331,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.329718" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.42407808" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.4967462" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3991323" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -476,52 +503,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TaskConstruct.java" />
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="630" column="59" selection-start-line="630" selection-start-column="59" selection-end-line="630" selection-end-column="59" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#drawGraph#0;class#Main#0" />
-            <element signature="method#addTaskG#0;class#Main#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AGConstruct.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3781">
-          <caret line="201" column="57" selection-start-line="201" selection-start-column="57" selection-end-line="201" selection-end-column="57" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/TaskNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Signature.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="7" column="52" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="54" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#744#745#0" expanded="true" />
-            <element signature="e#769#770#0" expanded="true" />
-            <element signature="e#862#863#0" expanded="true" />
-            <element signature="e#906#907#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Scope.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
+        <state relative-caret-position="325">
           <caret line="20" column="12" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -537,23 +521,81 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Signature.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="382">
+          <caret line="36" column="28" selection-start-line="36" selection-start-column="28" selection-end-line="36" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#744#745#0" expanded="true" />
+            <element signature="e#769#770#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TaskNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
+          <folding>
+            <element signature="e#644#645#0" expanded="true" />
+            <element signature="e#908#909#0" expanded="true" />
+            <element signature="e#940#941#0" expanded="true" />
+            <element signature="e#1048#1049#0" expanded="true" />
+            <element signature="e#1084#1085#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ASTNode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2242">
-          <caret line="186" column="4" selection-start-line="186" selection-start-column="4" selection-end-line="188" selection-end-column="5" />
+        <state relative-caret-position="168">
+          <caret line="116" selection-start-line="116" selection-end-line="116" />
           <folding>
-            <element signature="e#2385#2386#0" expanded="true" />
-            <element signature="e#2412#2413#0" expanded="true" />
-            <element signature="e#2454#2455#0" expanded="true" />
-            <element signature="e#2486#2487#0" expanded="true" />
+            <element signature="e#993#994#0" expanded="true" />
+            <element signature="e#1020#1021#0" expanded="true" />
+            <element signature="e#1232#1233#0" expanded="true" />
+            <element signature="e#1262#1263#0" expanded="true" />
+            <element signature="e#1308#1309#0" expanded="true" />
+            <element signature="e#1346#1347#0" expanded="true" />
+            <element signature="e#1661#1662#0" expanded="true" />
+            <element signature="e#1688#1689#0" expanded="true" />
+            <element signature="e#1798#1799#0" expanded="true" />
+            <element signature="e#1827#1828#0" expanded="true" />
+            <element signature="e#2275#2276#0" expanded="true" />
+            <element signature="e#2302#2303#0" expanded="true" />
+            <element signature="e#2436#2437#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AGConstruct.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="386">
+          <caret line="202" column="62" selection-start-line="202" selection-start-column="62" selection-end-line="202" selection-end-column="62" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ST.g4">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4332">
+        <state relative-caret-position="2124">
           <caret line="228" column="8" selection-start-line="228" selection-start-column="8" selection-end-line="228" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13091">
+          <caret line="703" column="30" selection-start-line="703" selection-start-column="23" selection-end-line="703" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#drawGraph#0;class#Main#0" />
+            <element signature="method#addTaskG#0;class#Main#0" />
+            <element signature="method#upDateTarget#0;class#Main#0" />
+          </folding>
         </state>
       </provider>
     </entry>

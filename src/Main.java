@@ -13,6 +13,7 @@ import org.graphstream.stream.file.FileSinkGML;
 
 public class Main {
     private static int id = 0;
+    private static Scope targets = new Scope(null);
     private static Graph ast = new SingleGraph("ast");
     private static FileSinkGML out1 = new FileSinkGML();
     private static Graph task = new MultiGraph("task");
@@ -21,6 +22,8 @@ public class Main {
     private static ArrayList<Map>staskList = new ArrayList<>();
     private static int SF=0;
     private static int TF=0;
+    private static Scanner scan= new Scanner(System.in);
+
 
 
     public static void main(String[] args) {
@@ -29,7 +32,7 @@ public class Main {
             ast.addSink(out1);
             ast.setStrict(false);
 
-            CharStream codePointCharStream = CharStreams.fromFileName("input.txt");
+            CharStream codePointCharStream = CharStreams.fromFileName("input4.txt");
             STLexer lexer = new STLexer(codePointCharStream);
             STParser parser = new STParser(new CommonTokenStream(lexer));
 
@@ -54,6 +57,7 @@ public class Main {
 
             taskConstruct(g);
             taskConstruct(g);
+
             drawTask(g);
             out2.end();
             //init
@@ -108,6 +112,7 @@ public class Main {
         }else if(current.getName().equals("Function")){
             if(current.getNext()==null){
                 TaskNode t = new TaskNode("Return",id);
+                t.varName = current.getOP_code();
                 id++;
                 current.setNext(t);
                 addTaskG(t);
@@ -115,6 +120,7 @@ public class Main {
             current.getChildren().get(current.getChildren().size()-1).setNext(current.getNext());
             taskConstruct(current.getChildren().get(current.getChildren().size()-1));
             current.setFirst(current.getChildren().get(current.getChildren().size()-1).getFirst());
+
         }else if(current.getName().equals("Stats")){
             for(int i = 0;i<current.getChildren().size()-1;i++){
                 current.getChildren().get(i).setNext(current.getChildren().get(i+1).getFirst());
@@ -183,7 +189,7 @@ public class Main {
                         t.setPred(current.getPred());
                         t.setSort(t.getKind());
                         current.setLast(t);
-
+                        current.setFirst(current.getLast());
                         addTaskG(t);
                     }else{
                         TaskNode t = new TaskNode("Load", id);
@@ -196,17 +202,19 @@ public class Main {
                         t.setPred(current.getPred());
                         t.setSort(t.getKind());
                         current.setLast(t);
+                        current.setFirst(current.getLast());
                         addTaskG(t);
                     }
-                    TaskNode t = current.getLast();
-                    t.setKind(current.getKind());
-                    t.setCoerce(current.getCoerce());
-                    t.setOpCode(current.getOP_code());
-                    t.setNext(current.getNext());
-                    t.setPred(current.getPred());
-                    t.setSort(t.getKind());
-                    current.setFirst(current.getLast());
                 }
+                TaskNode t = current.getLast();
+                t.setKind(current.getKind());
+                t.setCoerce(current.getCoerce());
+                t.setOpCode(current.getOP_code());
+                t.setNext(current.getNext());
+                t.setPred(current.getPred());
+                t.setSort(t.getKind());
+                current.setLast(t);
+                current.setFirst(current.getLast());
             }
         }else if (current.getName().equals("Constant")){
             if(current.getLast() == null) {
@@ -272,23 +280,31 @@ public class Main {
             current.setFirst(exp.getFirst());
             st.setNext(exp.getFirst());
         }else if(current.getName().equals("FC")){
-            if(current.getLast()==null){
-                TaskNode p = new TaskNode("Push",id);
+            if(current.getLast() == null) {
+                TaskNode p = new TaskNode("Push", id);
                 p.setOpCode(current.getOP_code());
                 id++;
                 addTaskG(p);
-                TaskNode c = new TaskNode("Call",id);
+                TaskNode c = new TaskNode("Call", id);
                 id++;
                 addTaskG(c);
-                for(ASTNode a : current.getChildren()){
-                    taskConstruct(a);
-                }
-                p.setNext(current.getChildren().get(0).getFirst());
-                current.TARGET.getSIG().reverse();
-                for(int i = 0;i<current.getChildren().size();i++){
+                current.setFirst(p);
+                current.setLast(c);
+            }
+            for(ASTNode a : current.getChildren()){
+                taskConstruct(a);
+            }
+            TaskNode p = current.getFirst();
+            TaskNode c = current.getLast();
+            p.setNext(current.getChildren().get(0).getFirst());
+            c.target = current.TARGET.getFirst();
+            current.TARGET.getSIG().reverse();
+            for(int i = 0;i<current.getChildren().size();i++){
+                if(current.getChildren().get(i).getLast().getNext()==null){
                     TaskNode s = new TaskNode("Store",id);
                     id++;
                     s.varName = current.TARGET.getSIG().getIn().get(i).getOP_code();
+                    s.setOpCode(s.varName);
                     if(i+1<current.getChildren().size()){
                         s.setNext(current.getChildren().get(i+1).getFirst());
                         s.setPred(current.getChildren().get(i).getFirst());
@@ -296,15 +312,12 @@ public class Main {
                     current.getChildren().get(i).getLast().setNext(s);
                     addTaskG(s);
                 }
-                TaskNode lastExpression = current.getChildren().get(current.getChildren().size()-1).getLast();
-                lastExpression.getNext().setNext(c);
-                lastExpression.getNext().setPred(current.getChildren().get(current.getChildren().size()-1).getLast());
-                current.setFirst(p);
-                current.setLast(c);
-            }
-            TaskNode c = current.getLast();
-            current.getChildren().get(current.getChildren().size()-1).getLast().getNext().setNext(c);
 
+            }
+            TaskNode lastExpression = current.getChildren().get(current.getChildren().size()-1).getLast();
+            lastExpression.getNext().setNext(c);
+            lastExpression.getNext().setPred(current.getChildren().get(current.getChildren().size()-1).getLast());
+            current.getLast().setNext(current.getNext());
         }else if(current.getName().equals("UE")){
             //inh
             current.getChildren().get(0).setNext(current.getLast());
@@ -473,21 +486,66 @@ public class Main {
     private static void Interpreter(TaskNode t) {
         TaskNode CT = t;
         while (CT != null) {
-            if(CT.getTask().equals("Store")){
-                staskList.get(TF).put(CT.varName,CT.getPred().getValue());
+            System.out.print("Current task "+ CT.getTask());
+            if(CT.getTask().equals("Const")){
+                System.out.print(" value is: "+ CT.getValue()+" type is: "+ CT.getKind());
+                CT = CT.getNext();
+            }else if(CT.getTask().equals("Read")){
+                System.out.print(" Input: ");
+                String str=scan.nextLine();
+                CT.setValue(str);
+                CT = CT.getNext();
+            }else if(CT.getTask().equals("IF")){
+                System.out.print(" value: "+CT.getPred().getValue());
+                if(CT.getPred().getValue().equals("true")){
+                    CT = CT.t.getFirst();
+                }else {
+                    if(CT.f.getName().equals("While")){
+                        CT = CT.f.getNext();
+                    }else {
+                        CT = CT.f.getFirst();
+                    }
+
+                }
+            }else if(CT.getTask().equals("Store")){
+                staskList.get(TF).put(CT.varName, CT.getPred().getValue());
+                CT.setValue(CT.getPred().getValue());
+                System.out.print(" value is: "+ CT.getValue()+" name is: "+ CT.varName);
+                CT = CT.getNext();
             }else if(CT.getTask().equals("Load")){
-                CT.setValue(String.valueOf(staskList.get(SF).get(CT.varName)));
+                CT.setValue((String) staskList.get(SF).get(CT.varName));
+                System.out.print(" value is: "+ CT.getValue()+" name is: "+ CT.varName);
+                CT = CT.getNext();
             }else if(CT.getTask().equals("Push")){
                 TF++;
                 if(TF > staskList.size()-1){
                     Map<String,Object> e = new HashMap<>();
                     staskList.add(e);
                 }
+                System.out.print(" name is: "+ CT.getOpCode());
+                CT = CT.getNext();
             }else if(CT.getTask().equals("Call")){
-
+                staskList.get(TF).put(CT.getTask(),CT);
+                staskList.get(TF).put("Next",CT.getNext());
+                staskList.get(TF).put("rSF",SF);
+                staskList.get(TF).put("rTF",TF-1);
+                SF=TF;
+                CT = CT.target;
             }else if(CT.getTask().equals("Return")){
+                TaskNode tmp = (TaskNode) staskList.get(SF).get("Next");
 
+                tmp.setPred(CT);
+                TaskNode call = (TaskNode) staskList.get(SF).get("Call");
+                call.setValue((String) staskList.get(SF).get(CT.varName));
+                CT.setValue((String) staskList.get(SF).get(CT.varName));
+                CT = (TaskNode) staskList.get(SF).get("Next");
+                TF = (int) staskList.get(SF).get("rTF");
+                SF = (int) staskList.get(SF).get("rSF");
+            }else if(CT.getTask().equals("Print")){
+                System.out.print("Printed value is "+CT.getPred().getValue());
+                CT = CT.getNext();
             }else if (CT.getTask().equals("UE")) {
+                System.out.print(" operation is: "+ CT.getOpCode());
                 if (CT.getOpCode().equals("-")) {
                     if(CT.getPred().getKind().equals("Int")){
                         int i = 0 - Integer.valueOf(CT.getPred().getValue());
@@ -496,11 +554,14 @@ public class Main {
                         double i = 0 - Double.valueOf(CT.getPred().getValue());
                         CT.setValue(String.valueOf(i));
                     }
+                    CT = CT.getNext();
                 } else if (CT.getOpCode().equals("NOT")) {
                         boolean i = !Boolean.valueOf(CT.getPred().getValue());
                         CT.setValue(String.valueOf(i));
+                        CT = CT.getNext();
                 }
             } else if (CT.getTask().equals("BE")) {
+                System.out.print(" operation is: "+ CT.getOpCode());
                 if (CT.getOpCode().equals("+")) {
                     if(CT.getPredLeft().getKind().equals("String")){
                         String s = CT.getPredLeft().getValue()+CT.getPredRight().getValue();
@@ -514,7 +575,7 @@ public class Main {
                         double right = Double.valueOf(CT.getPredRight().getValue());
                         CT.setValue(String.valueOf(left + right));
                     }
-
+                    CT = CT.getNext();
                 } else if (CT.getOpCode().equals("-")) {
                     if(CT.getPredLeft().getKind().equals("Int")){
                         int left = Integer.valueOf(CT.getPredLeft().getValue());
@@ -525,6 +586,7 @@ public class Main {
                         double right = Double.valueOf(CT.getPredRight().getValue());
                         CT.setValue(String.valueOf(left - right));
                     }
+                    CT = CT.getNext();
                 } else if (CT.getOpCode().equals("*")) {
                     if(CT.getPredLeft().getKind().equals("Int")){
                         int left = Integer.valueOf(CT.getPredLeft().getValue());
@@ -535,6 +597,7 @@ public class Main {
                         double right = Double.valueOf(CT.getPredRight().getValue());
                         CT.setValue(String.valueOf(left * right));
                     }
+                    CT = CT.getNext();
                 } else if (CT.getOpCode().equals("/")) {
                     if(CT.getPredLeft().getKind().equals("Int")){
                         int left = Integer.valueOf(CT.getPredLeft().getValue());
@@ -545,6 +608,7 @@ public class Main {
                         double right = Double.valueOf(CT.getPredRight().getValue());
                         CT.setValue(String.valueOf(left / right));
                     }
+                    CT = CT.getNext();
                 } else if (CT.getOpCode().equals("MOD")) {
                     if(CT.getPredLeft().getKind().equals("Int")){
                         int left = Integer.valueOf(CT.getPredLeft().getValue());
@@ -555,6 +619,7 @@ public class Main {
                         double right = Double.valueOf(CT.getPredRight().getValue());
                         CT.setValue(String.valueOf(left % right));
                     }
+                    CT = CT.getNext();
                 } else if (CT.getOpCode().equals("**")) {
                     if(CT.getPredLeft().getKind().equals("Int")){
                         int left = Integer.valueOf(CT.getPredLeft().getValue());
@@ -565,6 +630,7 @@ public class Main {
                         double right = Double.valueOf(CT.getPredRight().getValue());
                         CT.setValue(String.valueOf(Math.pow(left,right)));
                     }
+                    CT = CT.getNext();
                 } else if (CT.getOpCode().equals(">")) {
                     if(CT.getPredLeft().getKind().equals("Int")){
                         int left = Integer.valueOf(CT.getPredLeft().getValue());
@@ -575,6 +641,7 @@ public class Main {
                         double right = Double.valueOf(CT.getPredRight().getValue());
                         CT.setValue(String.valueOf(left > right));
                     }
+                    CT = CT.getNext();
                 } else if (CT.getOpCode().equals("<")) {
                     if(CT.getPredLeft().getKind().equals("Int")){
                         int left = Integer.valueOf(CT.getPredLeft().getValue());
@@ -585,6 +652,7 @@ public class Main {
                         double right = Double.valueOf(CT.getPredRight().getValue());
                         CT.setValue(String.valueOf(left < right));
                     }
+                    CT = CT.getNext();
                 } else if (CT.getOpCode().equals(">=")) {
                     if(CT.getPredLeft().getKind().equals("Int")){
                         int left = Integer.valueOf(CT.getPredLeft().getValue());
@@ -595,6 +663,7 @@ public class Main {
                         double right = Double.valueOf(CT.getPredRight().getValue());
                         CT.setValue(String.valueOf(left >= right));
                     }
+                    CT = CT.getNext();
                 } else if (CT.getOpCode().equals("<=")) {
                     if(CT.getPredLeft().getKind().equals("Int")){
                         int left = Integer.valueOf(CT.getPredLeft().getValue());
@@ -605,32 +674,34 @@ public class Main {
                         double right = Double.valueOf(CT.getPredRight().getValue());
                         CT.setValue(String.valueOf(left <= right));
                     }
+                    CT = CT.getNext();
                 } else if (CT.getOpCode().equals("==")) {
                     CT.setValue(String.valueOf(CT.getPredLeft().getValue().equals(CT.getPredRight().getValue())));
+                    CT = CT.getNext();
                 } else if (CT.getOpCode().equals("<>")) {
                     CT.setValue(String.valueOf(!CT.getPredLeft().getValue().equals(CT.getPredRight().getValue())));
+                    CT = CT.getNext();
                 } else if (CT.getOpCode().equals("AND")) {
                     boolean left = Boolean.valueOf(CT.getPredLeft().getValue());
                     boolean right = Boolean.valueOf(CT.getPredRight().getValue());
                     CT.setValue(String.valueOf(left && right));
+                    CT = CT.getNext();
                 }else if (CT.getOpCode().equals("OR")) {
-
                     boolean left = Boolean.valueOf(CT.getPredLeft().getValue());
                     boolean right = Boolean.valueOf(CT.getPredRight().getValue());
                     CT.setValue(String.valueOf(left || right));
+                    CT = CT.getNext();
                 }
                 else if (CT.getOpCode().equals("XOR")) {
                     boolean left = Boolean.valueOf(CT.getPredLeft().getValue());
                     boolean right = Boolean.valueOf(CT.getPredRight().getValue());
                     CT.setValue(String.valueOf(left ^ right));
+                    CT = CT.getNext();
                 }
+            }else if(CT.getTask().equals("Terminate")){
+                CT = null;
             }
-            if(CT.getNext() != null){
-                System.out.println("Task "+CT.getTask()+" value "+CT.getValue()+ " op "+ CT.getOpCode()+" next " +CT.getNext().getTask()+" varName "+CT.varName);
-            }
-            System.out.println("TF is " +TF +" SF is " + SF);
-            CT = CT.getNext();
-
+            System.out.println(" ");
         }
     }
 
@@ -647,6 +718,15 @@ public class Main {
             task.addNode(String.valueOf(n.getId()));
             task.getNode(String.valueOf(n.getId())).addAttribute("label", n.getTask()+" "+n.getOpCode()+" "+n.getKind());
         }
+    }
+    private static void upDateTarget(ASTNode a){
+        a.getLast().target = a.TARGET.getFirst();
+        for (ASTNode b: a.getChildren()) {
+            if(b.getName().equals("FC")){
+                upDateTarget(b);
+            }
+        }
+
     }
 
 }

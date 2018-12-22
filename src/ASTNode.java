@@ -51,6 +51,10 @@ public class ASTNode{
         return OP_code;
     }
 
+    public void setOP_code(String OP_code) {
+        this.OP_code = OP_code;
+    }
+
     public int getId(){
         return id;
     }

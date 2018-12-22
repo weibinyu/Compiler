@@ -200,6 +200,7 @@ public class AGConstruct {
                 current.TARGET = ENV.getOuter().getDefinition(current.getOP_code());
                 current.setKind(current.TARGET.getKind());
                 current.setArgumentType(current.getKind());
+                current.TARGET.setOP_code(current.getOP_code());
                 current.setOK(isCompatible(current.getChildren(),current.TARGET.getSIG()) && current.childOk());
                 current.setCOMPLETE(current.getKind()!=null&&current.getCoerce()!=null&current.TARGET!=null&&current.getOK()
                         &&current.childComplete());

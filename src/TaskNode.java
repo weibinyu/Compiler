@@ -14,6 +14,7 @@ public class TaskNode {
     public Boolean isLoacl;
     public ASTNode t;
     public ASTNode f;
+    public TaskNode target;
 
     public TaskNode(String task,int id){
         this.task = task;

@@ -6,6 +6,7 @@ import java.util.Map;
 public class Signature {
 
     public Map<String ,ASTNode> para = new HashMap<>();
+    private boolean reversed = false;
     public ArrayList<ASTNode> paras;
     public ArrayList<ASTNode> in = new ArrayList<>();
     public ArrayList<ASTNode> out = new ArrayList<>();
@@ -31,6 +32,9 @@ public class Signature {
         return out;
     }
     public void reverse(){
-        Collections.reverse(this.in);
+        if(!reversed){
+            Collections.reverse(this.in);
+            reversed = true;
+        }
     }
 }

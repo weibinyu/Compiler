@@ -6,10 +6,11 @@ PROGRAM GCD
  VAR
  a,b : INT;
  END_VAR
- a := in;
+ a := 15;
  b := in;
- out := gcd(a,b);
+ out := gcd(a,b-a);
 END_PROGRAM
+
 FUNCTION gcd : INT
  VAR_INPUT
  a,b : INT;
